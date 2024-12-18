@@ -22,4 +22,7 @@
     <string name="image_view_item_transform_content_description">Represents an image view in the
         item
     </string>
+    <string name="unitTree">单位树</string>
+    <string name="stubQuery">固定查询</string>
+    <string name="comQuery">组合查询</string>
 </resources>
