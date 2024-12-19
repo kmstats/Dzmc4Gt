@@ -1,26 +1,39 @@
 package com.echo.dzmc4gt;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.echo.dzmc4gt.databinding.ActivityMainBinding;
+
+import  androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+
+    private TabLayout tableLayout;
+    private ViewPager2 viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
                     .build();
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(navigationView, navController);
+
+            //设置tabLayout
+            tableLayout = findViewById(R.id.tabLayout);
+            viewPager = findViewById(R.id.viewPager);
+            viewPager.setAdapter(new ViewPagerAdapter(this));
+            new TabLayoutMediator(tableLayout,viewPager, (tab, position)->tab.setText("Tab "+ (position + 1))).attach();
         }
 
 
@@ -89,5 +108,34 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public class ViewPagerAdapter extends FragmentStateAdapter {
+
+        public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+            super(fragmentActivity);
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            return new MyFragment();
+        }
+
+        @Override
+        public int getItemCount() {
+            return 3;
+        }
+    }
+
+    public static class MyFragment extends Fragment {
+        @Nullable
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.fragment_reflow, container,false  );
+            TextView textView = view.findViewById(R.id.text_reflow);
+            textView.setText("测试测试" + (getParentFragmentManager().getBackStackEntryCount() + 1));
+            return view;
+        }
     }
 }

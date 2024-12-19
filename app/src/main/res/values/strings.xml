@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">Dzmc4Gt</string>
+    <string name="app_name">嵩明干部名册</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">设置</string>
 
     <string name="menu_transform">单位树Transform</string>
     <string name="menu_reflow">固定查询Reflow</string>
