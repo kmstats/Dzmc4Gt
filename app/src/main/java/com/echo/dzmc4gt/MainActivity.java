@@ -8,13 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.echo.dzmc4gt.ui.reflow.ReflowFragment;
+import com.echo.dzmc4gt.ui.slideshow.SlideshowFragment;
+import com.echo.dzmc4gt.ui.transform.TransformFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -23,10 +25,11 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.appcompat.app.AppCompatActivity;
 import com.echo.dzmc4gt.databinding.ActivityMainBinding;
 
-import  androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TabLayout tableLayout;
     private ViewPager2 viewPager;
+    private TabLayoutMediator tabLayoutMediator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +66,29 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(navigationView, navController);
 
-            //设置tabLayout
-            tableLayout = findViewById(R.id.tabLayout);
-            viewPager = findViewById(R.id.viewPager);
-            viewPager.setAdapter(new ViewPagerAdapter(this));
-            new TabLayoutMediator(tableLayout,viewPager, (tab, position)->tab.setText("Tab "+ (position + 1))).attach();
+         //设置tabLayout
+            tableLayout = navigationView.getHeaderView(0).findViewById(R.id.tabLayout);
+            viewPager = navigationView.getHeaderView(0).findViewById(R.id.viewPager);
+            ArrayList<Fragment> fragments = new ArrayList<>();
+            fragments.add(new ReflowFragment());
+            fragments.add(new SlideshowFragment());
+            fragments.add(new TransformFragment());
+
+            ArrayList<String> titles = new ArrayList<>();
+            titles.add(getString(R.string.unitTree));
+            titles.add(getString(R.string.stubQuery));
+            titles.add(getString(R.string.comQuery));
+
+
+            ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this,fragments);
+            viewPager.setAdapter(viewPagerAdapter);
+            tabLayoutMediator = new TabLayoutMediator(tableLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+                @Override
+                public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                   tab.setText(titles.get(position));
+                }
+            });
+            tabLayoutMediator.attach();
         }
 
 
@@ -110,32 +132,9 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    public class ViewPagerAdapter extends FragmentStateAdapter {
-
-        public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
-            super(fragmentActivity);
-        }
-
-        @NonNull
-        @Override
-        public Fragment createFragment(int position) {
-            return new MyFragment();
-        }
-
-        @Override
-        public int getItemCount() {
-            return 3;
-        }
-    }
-
-    public static class MyFragment extends Fragment {
-        @Nullable
-        @Override
-        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_reflow, container,false  );
-            TextView textView = view.findViewById(R.id.text_reflow);
-            textView.setText("测试测试" + (getParentFragmentManager().getBackStackEntryCount() + 1));
-            return view;
-        }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        tabLayoutMediator.detach();
     }
 }
