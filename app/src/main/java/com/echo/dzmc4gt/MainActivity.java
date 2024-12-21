@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.echo.dzmc4gt.ui.reflow.ReflowFragment;
 import com.echo.dzmc4gt.ui.slideshow.SlideshowFragment;
 import com.echo.dzmc4gt.ui.transform.TransformFragment;
+import com.echo.dzmc4gt.ui.unitTree.UnitTreeFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -77,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
             viewPager = findViewById(R.id.viewPager);
 
             ArrayList<Fragment> fragments = new ArrayList<>();
-            fragments.add(new ReflowFragment());
+            //fragments.add(new ReflowFragment());
+            fragments.add(new UnitTreeFragment(this));
             fragments.add(new SlideshowFragment());
             fragments.add(new TransformFragment());
 

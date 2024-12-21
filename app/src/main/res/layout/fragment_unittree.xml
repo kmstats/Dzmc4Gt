@@ -10,24 +10,19 @@
         android:layout_height="50dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/text_unitTree"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textAlignment="center"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/btn_query"
-            android:layout_width="70dp"
+        <SearchView
+            android:id="@+id/text_search"
+            android:queryHint="@string/SearchHint"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/BTN_QUERY" />
+            android:layout_margin="10dp"
+            android:background="@color/white" />
     </LinearLayout>
         <ExpandableListView
+            android:id="@+id/expandableListView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#cccc"
-            android:choiceMode="singleChoice"/>
+            android:background="@color/purple_200"
+            android:choiceMode="singleChoice" />
     </LinearLayout>

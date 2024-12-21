@@ -28,4 +28,5 @@
     <string name="DB_VERSION">1</string>
     <string name="DB_NAME">/data/data/com.echo.dzmc4gt/databases/cadre.db</string>
     <string name="BTN_QUERY">搜索</string>
+    <string name="SearchHint">输入姓名或拼音</string>
 </resources>

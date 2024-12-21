@@ -39,4 +39,10 @@ public class TransformViewModel extends ViewModel {
     public LiveData<List<User>> getUserList() {
         return userList;
     }
+
+    public void setUserList(List<User> users){
+        MutableLiveData<List<User>> u = new MutableLiveData<>();
+        u.setValue(users);
+        this.userList = u;
+    }
 }
