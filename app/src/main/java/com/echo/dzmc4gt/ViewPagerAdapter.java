@@ -9,12 +9,10 @@ import java.util.ArrayList;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
     private ArrayList<Fragment> fragmentList;
-    //private ArrayList<String> titleList;
 
-    public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, @NonNull ArrayList<Fragment> fragments) {
+    public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, ArrayList<Fragment> fragments) {
         super(fragmentActivity);
-        fragmentList = fragments;
-        //titleList = titles;
+        this.fragmentList = fragments;
     }
 
     @NonNull

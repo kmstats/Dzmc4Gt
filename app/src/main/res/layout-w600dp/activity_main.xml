@@ -24,10 +24,42 @@ across the layout configurations
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
+            android:background="@color/teal_200"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:headerLayout="@layout/my_leftview" />
+            app:headerLayout="@layout/nav_header_main"
+            app:menu="@menu/navigation_drawer" >
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/unitTree" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stubQuery" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/comQuery" />
+            </com.google.android.material.tabs.TabLayout>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:background="@color/purple_200"
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="1200dp" >
+
+            </androidx.viewpager2.widget.ViewPager2>
+        </com.google.android.material.navigation.NavigationView>
     </androidx.drawerlayout.widget.DrawerLayout>
 </FrameLayout>

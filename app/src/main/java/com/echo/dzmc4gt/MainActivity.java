@@ -66,9 +66,10 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(navigationView, navController);
 
-         //设置tabLayout
-            tableLayout = navigationView.getHeaderView(0).findViewById(R.id.tabLayout);
-            viewPager = navigationView.getHeaderView(0).findViewById(R.id.viewPager);
+            //设置tabLayout
+            tableLayout = findViewById(R.id.tabLayout);
+            viewPager = findViewById(R.id.viewPager);
+
             ArrayList<Fragment> fragments = new ArrayList<>();
             fragments.add(new ReflowFragment());
             fragments.add(new SlideshowFragment());
@@ -79,13 +80,12 @@ public class MainActivity extends AppCompatActivity {
             titles.add(getString(R.string.stubQuery));
             titles.add(getString(R.string.comQuery));
 
-
-            ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this,fragments);
+            ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter((this),fragments);
             viewPager.setAdapter(viewPagerAdapter);
-            tabLayoutMediator = new TabLayoutMediator(tableLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tableLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
                 @Override
                 public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                   tab.setText(titles.get(position));
+                    tab.setText(titles.get(position));
                 }
             });
             tabLayoutMediator.attach();
@@ -132,9 +132,4 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-        tabLayoutMediator.detach();
-    }
 }
