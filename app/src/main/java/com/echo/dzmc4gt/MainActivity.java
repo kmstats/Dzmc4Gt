@@ -1,12 +1,14 @@
 package com.echo.dzmc4gt;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.echo.dzmc4gt.ui.reflow.ReflowFragment;
 import com.echo.dzmc4gt.ui.slideshow.SlideshowFragment;
@@ -15,7 +17,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -32,7 +35,8 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    // 定义权限请求码
+    private static final int REQUEST_CODE_PERMISSION = 1;
     private AppBarConfiguration mAppBarConfiguration;
 
     private TabLayout tableLayout;
@@ -41,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        checkAndRequestPermissions();
+
         super.onCreate(savedInstanceState);
 
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -130,6 +136,62 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    // 处理权限请求的结果
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 权限被用户同意，可以进行文件操作
+                performFileOperations();
+            } else {
+                // 权限被用户拒绝，需要引导用户到设置页面手动开启权限
+                // 可以选择引导用户到应用的设置页面
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        }
+    }
+
+    //**************** 自己的代码
+    // 检查权限并请求
+    private void checkAndRequestPermissions() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // 请求权限
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_CODE_PERMISSION);
+        } else {
+            // 权限已经被授予，可以进行文件操作
+            performFileOperations();
+        }
+    }
+
+
+    private void performFileOperations() {
+        // 此处可以进行文件读写操作
+        Toast.makeText(this, "可以进行文件读写操作", Toast.LENGTH_SHORT).show();
+        Log.d("tag", String.valueOf(android.os.Environment.getExternalStorageDirectory()));
+        //初始化数据库
+        setDatabase();
+    }
+
+    /**
+     * 初始化数据库
+     */
+    private void setDatabase() {
+        // 数据库存储目录
+        DbHelper mDbHelper = DbHelper.getInstance(this);
+        //mDbHelper.close();
+        mDbHelper.open();
     }
 
 }

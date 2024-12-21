@@ -1,5 +1,6 @@
 package com.echo.dzmc4gt.ui.transform;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.echo.dzmc4gt.R;
+import com.echo.dzmc4gt.User;
+import com.echo.dzmc4gt.Utils;
 import com.echo.dzmc4gt.databinding.FragmentTransformBinding;
 import com.echo.dzmc4gt.databinding.ItemTransformBinding;
 
@@ -41,9 +44,9 @@ public class TransformFragment extends Fragment {
         View root = binding.getRoot();
 
         RecyclerView recyclerView = binding.recyclerviewTransform;
-        ListAdapter<String, TransformViewHolder> adapter = new TransformAdapter();
+        ListAdapter<User, TransformViewHolder> adapter = new TransformAdapter();
         recyclerView.setAdapter(adapter);
-        transformViewModel.getTexts().observe(getViewLifecycleOwner(), adapter::submitList);
+        transformViewModel.getUserList().observe(getViewLifecycleOwner(), adapter::submitList);
         return root;
     }
 
@@ -53,36 +56,17 @@ public class TransformFragment extends Fragment {
         binding = null;
     }
 
-    private static class TransformAdapter extends ListAdapter<String, TransformViewHolder> {
-
-        private final List<Integer> drawables = Arrays.asList(
-                R.drawable.avatar_1,
-                R.drawable.avatar_2,
-                R.drawable.avatar_3,
-                R.drawable.avatar_4,
-                R.drawable.avatar_5,
-                R.drawable.avatar_6,
-                R.drawable.avatar_7,
-                R.drawable.avatar_8,
-                R.drawable.avatar_9,
-                R.drawable.avatar_10,
-                R.drawable.avatar_11,
-                R.drawable.avatar_12,
-                R.drawable.avatar_13,
-                R.drawable.avatar_14,
-                R.drawable.avatar_15,
-                R.drawable.avatar_16);
-
+    private static class TransformAdapter extends ListAdapter<User, TransformViewHolder> {
         protected TransformAdapter() {
-            super(new DiffUtil.ItemCallback<String>() {
+            super(new DiffUtil.ItemCallback<User>() {
                 @Override
-                public boolean areItemsTheSame(@NonNull String oldItem, @NonNull String newItem) {
+                public boolean areItemsTheSame(@NonNull User oldItem, @NonNull User newItem) {
                     return oldItem.equals(newItem);
                 }
 
                 @Override
-                public boolean areContentsTheSame(@NonNull String oldItem, @NonNull String newItem) {
-                    return oldItem.equals(newItem);
+                public boolean areContentsTheSame(@NonNull User oldItem, @NonNull User newItem) {
+                    return oldItem._id.equals(newItem._id);
                 }
             });
         }
@@ -96,23 +80,23 @@ public class TransformFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull TransformViewHolder holder, int position) {
-            holder.textView.setText(getItem(position));
-            holder.imageView.setImageDrawable(
-                    ResourcesCompat.getDrawable(holder.imageView.getResources(),
-                            drawables.get(position),
-                            null));
+            holder.textView.setText(getItem(position).xm);
+            Bitmap bmp = Utils.byteToBmp(getItem(position).xp);
+            holder.imageView.setImageBitmap(bmp);
+            holder.zw_item_transform.setText(getItem(position).zw);
         }
     }
 
     private static class TransformViewHolder extends RecyclerView.ViewHolder {
-
         private final ImageView imageView;
         private final TextView textView;
+        private final TextView zw_item_transform;
 
         public TransformViewHolder(ItemTransformBinding binding) {
             super(binding.getRoot());
             imageView = binding.imageViewItemTransform;
             textView = binding.textViewItemTransform;
+            zw_item_transform = binding.zwItemTransform;
         }
     }
 }

@@ -9,10 +9,12 @@
         android:id="@+id/image_view_item_transform"
         android:layout_width="@dimen/item_transform_image_length"
         android:layout_height="@dimen/item_transform_image_length"
-        android:layout_margin="8dp"
+        android:layout_margin="1dp"
+        android:layout_marginStart="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.071"
         tools:src="@tools:sample/avatars" />
 
     <TextView
@@ -23,4 +25,14 @@
         app:layout_constraintStart_toStartOf="@id/image_view_item_transform"
         app:layout_constraintTop_toBottomOf="@id/image_view_item_transform"
         tools:text="This is item # xx" />
+
+    <TextView
+        android:id="@+id/zw_item_transform"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@id/text_view_item_transform"
+        app:layout_constraintStart_toStartOf="@id/text_view_item_transform"
+        app:layout_constraintTop_toBottomOf="@id/text_view_item_transform"
+        tools:text="textview" />
 </androidx.constraintlayout.widget.ConstraintLayout>

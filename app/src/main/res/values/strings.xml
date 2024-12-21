@@ -25,4 +25,7 @@
     <string name="unitTree">单位树</string>
     <string name="stubQuery">固定查询</string>
     <string name="comQuery">组合查询</string>
+    <string name="DB_VERSION">1</string>
+    <string name="DB_NAME">/data/data/com.echo.dzmc4gt/databases/cadre.db</string>
+    <string name="BTN_QUERY">搜索</string>
 </resources>
