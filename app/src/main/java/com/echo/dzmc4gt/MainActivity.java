@@ -8,11 +8,13 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.Menu;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.echo.dzmc4gt.ui.reflow.ReflowFragment;
 import com.echo.dzmc4gt.ui.slideshow.SlideshowFragment;
 import com.echo.dzmc4gt.ui.transform.TransformFragment;
+import com.echo.dzmc4gt.ui.transform.TransformViewModel;
 import com.echo.dzmc4gt.ui.unitTree.UnitTreeFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -21,6 +23,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -34,11 +38,17 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     // 定义权限请求码
     private static final int REQUEST_CODE_PERMISSION = 1;
     private AppBarConfiguration mAppBarConfiguration;
+    private DbHelper mDbHelper;
+
+    public UnitTreeFragment unitTreeFragment;
+    public TransformFragment transformFragment;
+    public SlideshowFragment slideshowFragment;
 
     private TabLayout tableLayout;
     private ViewPager2 viewPager;
@@ -59,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
             binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).setAnchorView(R.id.fab).show());
         }
-        //
+
+        //设置主显示区
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
         assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();
@@ -79,9 +90,14 @@ public class MainActivity extends AppCompatActivity {
 
             ArrayList<Fragment> fragments = new ArrayList<>();
             //fragments.add(new ReflowFragment());
-            fragments.add(new UnitTreeFragment(this));
+            unitTreeFragment = new UnitTreeFragment(this);
+            fragments.add(unitTreeFragment);
+
+            slideshowFragment = new SlideshowFragment();
             fragments.add(new SlideshowFragment());
-            fragments.add(new TransformFragment());
+
+            transformFragment = new TransformFragment();
+            fragments.add(transformFragment);
 
             ArrayList<String> titles = new ArrayList<>();
             titles.add(getString(R.string.unitTree));
@@ -98,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
             });
             tabLayoutMediator.attach();
         }
+
 
 
       /*  BottomNavigationView bottomNavigationView = binding.appBarMain.contentMain.bottomNavView;
@@ -191,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setDatabase() {
         // 数据库存储目录
-        DbHelper mDbHelper = DbHelper.getInstance(this);
+        mDbHelper = DbHelper.getInstance(this);
         //mDbHelper.close();
         mDbHelper.open();
     }

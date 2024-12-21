@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DbHelper  extends SQLiteOpenHelper {
     private static final String TAG = "DbHelper";
@@ -144,14 +146,15 @@ public class DbHelper  extends SQLiteOpenHelper {
      * 返回所有人员
      * @return 所有Cursor
      */
-    public Cursor getUsers() {
+    public List<User> getUsers() {
         String[] columns = new String[]{COL_GBMC_XM, COL_GBMC_MZ, " csnyStr||'('||cast(strftime('%Y.%m', datetime('now'))-csnyStr as INTEGER)||')' as csnyStr", COL_GBMC_ZW,COL_GBMC_ZJZJ,COL_GBMC_XP, COL_GBMC_ZJ,COL_GBMC_ID + " as _id" };
         String selection = "classid=0";
         String[] selectionArgs = null;
         String groupBy = null;
         String having = null;
         String orderBy = COL_GBMC_XH;
-        return mDB.query("tb_cadre_node as b left outer join tb_Cadre as a on a.CadreID=b.ZwCadreID ", columns, selection, selectionArgs, groupBy, having, orderBy);
+        Cursor cursor= mDB.query("tb_cadre_node as b left outer join tb_Cadre as a on a.CadreID=b.ZwCadreID ", columns, selection, selectionArgs, groupBy, having, orderBy);
+        return getListFromCursor(cursor);
     }
 
     /**
@@ -177,14 +180,15 @@ public class DbHelper  extends SQLiteOpenHelper {
      * @param id 人员ID
      * @return 人员信息Cursor
      */
-    public Cursor getUserInfoByID(long id) {
+    public List<User> getUserInfoByID(long id) {
         String[] columns = new String[]{COL_GBMC_ID + " as _id ", COL_GBMC_XM, COL_GBMC_XP, COL_GBMC_XB, " csnyStr||'('||cast(strftime('%Y.%m', datetime('now'))-csnyStr as INTEGER)||')' as csnyStr", COL_GBMC_MZ, COL_GBMC_JG, COL_GBMC_CSD, COL_GBMC_RDSJ, COL_GBMC_CJGZSJ, COL_GBMC_JKZK, COL_GBMC_WHCD, COL_GBMC_BYYX, COL_GBMC_ZZJY, COL_GBMC_ZZBYYX, COL_GBMC_ZW, COL_GBMC_JL, COL_GBMC_JCQK, COL_GBMC_NDKH, COL_GBMC_DXPXQK, COL_GBMC_ZJZJ};
         String selection = COL_GBMC_ID + "=?";
         String[] selectionArgs = new String[]{String.valueOf(id)};
         String groupBy = null;
         String having = null;
         String orderBy = null;
-        return mDB.query(TABLE_GBMC, columns, selection, selectionArgs, groupBy, having, orderBy);
+        Cursor cursor = mDB.query(TABLE_GBMC, columns, selection, selectionArgs, groupBy, having, orderBy);
+        return getListFromCursor(cursor);
     }
 
     /**
@@ -203,14 +207,32 @@ public class DbHelper  extends SQLiteOpenHelper {
         return mDB.query(TABLE_RELATE, columns, selection, selectionArgs, groupBy, having, orderBy);
     }
 
-    public Cursor getUsersByName(String name) {
-        String[] columns = new String[]{COL_GBMC_ID + " as _id ", COL_GBMC_XM, COL_GBMC_MZ, COL_GBMC_CSNY, COL_GBMC_ZJ, COL_GBMC_ZW, COL_GBMC_ZJZJ, COL_GBMC_XP};
+    public List<User> getUsersByName(String name) {
+        String[] columns = new String[]{COL_GBMC_XM, COL_GBMC_MZ, COL_GBMC_CSNY, COL_GBMC_ZW, COL_GBMC_ZJZJ, COL_GBMC_XP, COL_GBMC_ZJ, COL_GBMC_ID + " as _id "};
         String selection = COL_GBMC_XM + " like ? or py = ?";
         String[] selectionArgs = new String[]{"%" + name + "%", name};
         String groupBy = null;
         String having = null;
         String orderBy = null;
-        return mDB.query(TABLE_GBMC, columns, selection, selectionArgs, groupBy, having, orderBy);
+        Cursor cursor = mDB.query(TABLE_GBMC, columns, selection, selectionArgs, groupBy, having, orderBy);
+        return getListFromCursor(cursor);
+    }
+
+    public List<User> getListFromCursor(Cursor cursor){
+        List<User> ul = new ArrayList<>();
+        while (cursor.moveToNext()){
+            User u = new User();
+            u.xm = cursor.getString(0);
+            u.mz = cursor.getString(1);
+            u.csny = cursor.getString(2);
+            u.zw = cursor.getString(3);
+            u.zjzj = cursor.getString(4);
+            u.xp = cursor.getBlob(5);
+            u.zj = cursor.getString(6);
+            u._id = cursor.getString(7);
+            ul.add(u);
+        }
+        return ul;
     }
 }
 

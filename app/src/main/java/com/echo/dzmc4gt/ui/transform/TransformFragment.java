@@ -34,11 +34,11 @@ import java.util.List;
 public class TransformFragment extends Fragment {
 
     private FragmentTransformBinding binding;
+    public TransformViewModel transformViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        TransformViewModel transformViewModel =
-                new ViewModelProvider(this).get(TransformViewModel.class);
+        transformViewModel = new ViewModelProvider(this).get(TransformViewModel.class);
 
         binding = FragmentTransformBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
