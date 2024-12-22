@@ -7,8 +7,6 @@ import androidx.lifecycle.ViewModel;
 import com.echo.dzmc4gt.DbHelper;
 import com.echo.dzmc4gt.User;
 
-import android.database.Cursor;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -57,7 +57,12 @@ public class UnitTreeFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                List<User> u = DbHelper.getInstance(ma.getApplicationContext()).getUsersByName(s);
+                List<User> u;
+                if (s != null) {
+                    u = DbHelper.getInstance(ma.getApplicationContext()).getUsersByName(s);
+                }else{
+                    u= DbHelper.getInstance(ma.getApplicationContext()).getUsers();
+                }
                 transformViewModel.setUserList(u);
                 // 隐藏软键盘
                 InputMethodManager imm = (InputMethodManager) ma.getSystemService(Context.INPUT_METHOD_SERVICE);

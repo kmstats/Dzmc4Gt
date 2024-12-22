@@ -78,7 +78,7 @@ public class DbHelper  extends SQLiteOpenHelper {
         if (!dbFile.exists()){
             copyDataBase();
         }
-        mHelper = new DbHelper(mCtx);
+        mHelper =  DbHelper.getInstance(mCtx);
     }
 
     @Override
@@ -150,7 +150,7 @@ public class DbHelper  extends SQLiteOpenHelper {
         String[] columns = new String[]{COL_GBMC_XM, COL_GBMC_MZ, " csnyStr||'('||cast(strftime('%Y.%m', datetime('now'))-csnyStr as INTEGER)||')' as csnyStr", COL_GBMC_ZW,COL_GBMC_ZJZJ,COL_GBMC_XP, COL_GBMC_ZJ,COL_GBMC_ID + " as _id" };
         String selection = "classid=0";
         String[] selectionArgs = null;
-        String groupBy = null;
+        String groupBy = "CadreID";
         String having = null;
         String orderBy = COL_GBMC_XH;
         Cursor cursor= mDB.query("tb_cadre_node as b left outer join tb_Cadre as a on a.CadreID=b.ZwCadreID ", columns, selection, selectionArgs, groupBy, having, orderBy);

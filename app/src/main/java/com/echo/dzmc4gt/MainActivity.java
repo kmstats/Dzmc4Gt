@@ -8,6 +8,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.Menu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.echo.dzmc4gt.ui.slideshow.SlideshowFragment;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayoutMediator tabLayoutMediator;
 
     private TransformViewModel transformViewModel;
+    ArrayList<String> titles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,17 +88,11 @@ public class MainActivity extends AppCompatActivity {
             viewPager = findViewById(R.id.viewPager);
 
             ArrayList<Fragment> fragments = new ArrayList<>();
-            //fragments.add(new ReflowFragment());
-            UnitTreeFragment unitTreeFragment = new UnitTreeFragment();
-            fragments.add(unitTreeFragment);
+            fragments.add( new UnitTreeFragment());
+            fragments.add(new SlideshowFragment());
+            fragments.add(new TransformFragment());
 
-            SlideshowFragment slideshowFragment = new SlideshowFragment();
-            fragments.add(slideshowFragment);
-
-            TransformFragment transformFragment = new TransformFragment();
-            fragments.add(transformFragment);
-
-            ArrayList<String> titles = new ArrayList<>();
+            titles = new ArrayList<>();
             titles.add(getString(R.string.unitTree));
             titles.add(getString(R.string.stubQuery));
             titles.add(getString(R.string.comQuery));
@@ -111,6 +107,14 @@ public class MainActivity extends AppCompatActivity {
             });
             tabLayoutMediator.attach();
         }
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                TextView tv = findViewById(R.id.tv_TabName);
+                tv.setText(titles.get(position));
+            }
+        });
 
       /*  BottomNavigationView bottomNavigationView = binding.appBarMain.contentMain.bottomNavView;
         if (bottomNavigationView != null) {
@@ -213,5 +217,13 @@ public class MainActivity extends AppCompatActivity {
      */
     public TransformViewModel getTransformViewModel(){
         return transformViewModel;
+    }
+
+    /**
+     * 共享toolbar
+     */
+    public void setTvCount(String s){
+        TextView tv = findViewById(R.id.tv_Count);
+        tv.setText(s);
     }
 }

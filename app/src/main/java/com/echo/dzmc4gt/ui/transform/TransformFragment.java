@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -48,7 +49,12 @@ public class TransformFragment extends Fragment {
         RecyclerView recyclerView = binding.recyclerviewTransform;
         ListAdapter<User, TransformViewHolder> adapter = new TransformAdapter();
         recyclerView.setAdapter(adapter);
-        transformViewModel.getUserList().observe(getViewLifecycleOwner(), adapter::submitList);
+        transformViewModel.getUserList().observe(getViewLifecycleOwner(), userList -> {
+            // 执行 adapter 的 submitList 方法
+            adapter.submitList(userList);
+            // 显示 记录条数
+            ((MainActivity)getActivity()).setTvCount("共 " + String.valueOf(userList.size())+" 条记录");
+        });
         return root;
     }
 
