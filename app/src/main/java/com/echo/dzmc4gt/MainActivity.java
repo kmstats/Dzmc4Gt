@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
     private TabLayout tableLayout;
     private ViewPager2 viewPager;
-    private TabLayoutMediator tabLayoutMediator;
 
     private TransformViewModel transformViewModel;
     ArrayList<String> titles;

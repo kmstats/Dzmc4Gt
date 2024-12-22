@@ -9,23 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.echo.dzmc4gt.MainActivity;
-import com.echo.dzmc4gt.R;
 import com.echo.dzmc4gt.User;
 import com.echo.dzmc4gt.Utils;
 import com.echo.dzmc4gt.databinding.FragmentTransformBinding;
 import com.echo.dzmc4gt.databinding.ItemTransformBinding;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Fragment that demonstrates a responsive layout pattern where the format of the content
@@ -53,7 +46,7 @@ public class TransformFragment extends Fragment {
             // 执行 adapter 的 submitList 方法
             adapter.submitList(userList);
             // 显示 记录条数
-            ((MainActivity)getActivity()).setTvCount("共 " + String.valueOf(userList.size())+" 条记录");
+            ((MainActivity)getActivity()).setTvCount("共 " + userList.size() +" 条记录");
         });
         return root;
     }

@@ -28,16 +28,11 @@ public class UnitTreeFragment extends Fragment {
     private UnitTreeViewModel mViewModel;
     private View view;
     private ExpandableListView expandedListView;
-    private View rowView;
     private  MainActivity ma;
     private TransformViewModel transformViewModel;
 
     public UnitTreeFragment(){
 
-    }
-
-    public static UnitTreeFragment newInstance() {
-        return new UnitTreeFragment();
     }
 
     @Override

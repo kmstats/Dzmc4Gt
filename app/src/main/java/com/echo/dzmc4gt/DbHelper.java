@@ -89,12 +89,11 @@ public class DbHelper  extends SQLiteOpenHelper {
     /**
      * 打开数据库
      */
-    public SQLiteDatabase open(){
+    public void open(){
         if (mDB == null || !mDB.isOpen()){
             //mDB = mHelper.getWritableDatabase();
             mDB = mHelper.getReadableDatabase();
         }
-        return mDB;
     }
     public void close(){
         if (mDB != null){
