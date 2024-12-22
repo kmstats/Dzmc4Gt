@@ -27,6 +27,6 @@ public class TransformViewModel extends ViewModel {
     }
 
     public void setUserList(List<User> users){
-        userList.postValue(users);
+        userList.setValue(users);
     }
 }

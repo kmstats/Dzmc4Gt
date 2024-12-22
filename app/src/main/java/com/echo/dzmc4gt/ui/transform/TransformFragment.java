@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.echo.dzmc4gt.MainActivity;
 import com.echo.dzmc4gt.R;
 import com.echo.dzmc4gt.User;
 import com.echo.dzmc4gt.Utils;
@@ -38,7 +39,8 @@ public class TransformFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        transformViewModel = new ViewModelProvider(this).get(TransformViewModel.class);
+        //transformViewModel = new ViewModelProvider(this).get(TransformViewModel.class);
+        transformViewModel = ((MainActivity)getActivity()).getTransformViewModel();
 
         binding = FragmentTransformBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

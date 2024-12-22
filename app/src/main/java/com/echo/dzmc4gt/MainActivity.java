@@ -8,10 +8,8 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.Menu;
-import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.echo.dzmc4gt.ui.reflow.ReflowFragment;
 import com.echo.dzmc4gt.ui.slideshow.SlideshowFragment;
 import com.echo.dzmc4gt.ui.transform.TransformFragment;
 import com.echo.dzmc4gt.ui.transform.TransformViewModel;
@@ -23,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -38,7 +35,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     // 定义权限请求码
@@ -46,13 +42,11 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private DbHelper mDbHelper;
 
-    public UnitTreeFragment unitTreeFragment;
-    public TransformFragment transformFragment;
-    public SlideshowFragment slideshowFragment;
-
     private TabLayout tableLayout;
     private ViewPager2 viewPager;
     private TabLayoutMediator tabLayoutMediator;
+
+    private TransformViewModel transformViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        //设置共享viewMode
+        transformViewModel = new ViewModelProvider(this).get(TransformViewModel.class);
 
         //设置工具栏
         setSupportActionBar(binding.appBarMain.toolbar);
@@ -90,13 +87,13 @@ public class MainActivity extends AppCompatActivity {
 
             ArrayList<Fragment> fragments = new ArrayList<>();
             //fragments.add(new ReflowFragment());
-            unitTreeFragment = new UnitTreeFragment(this);
+            UnitTreeFragment unitTreeFragment = new UnitTreeFragment();
             fragments.add(unitTreeFragment);
 
-            slideshowFragment = new SlideshowFragment();
-            fragments.add(new SlideshowFragment());
+            SlideshowFragment slideshowFragment = new SlideshowFragment();
+            fragments.add(slideshowFragment);
 
-            transformFragment = new TransformFragment();
+            TransformFragment transformFragment = new TransformFragment();
             fragments.add(transformFragment);
 
             ArrayList<String> titles = new ArrayList<>();
@@ -114,8 +111,6 @@ public class MainActivity extends AppCompatActivity {
             });
             tabLayoutMediator.attach();
         }
-
-
 
       /*  BottomNavigationView bottomNavigationView = binding.appBarMain.contentMain.bottomNavView;
         if (bottomNavigationView != null) {
@@ -213,4 +208,10 @@ public class MainActivity extends AppCompatActivity {
         mDbHelper.open();
     }
 
+    /**
+     * 共享Transfer ViewMo
+     */
+    public TransformViewModel getTransformViewModel(){
+        return transformViewModel;
+    }
 }
