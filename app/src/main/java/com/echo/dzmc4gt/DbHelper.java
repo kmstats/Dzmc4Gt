@@ -14,8 +14,8 @@ import java.util.List;
 
 public class DbHelper  extends SQLiteOpenHelper {
     private static final String TAG = "DbHelper";
-    private String dbName;
-    private Context mCtx;
+    private final String dbName;
+    private final Context mCtx;
     private static DbHelper mHelper = null;
     private SQLiteDatabase mDB = null;
 
@@ -162,14 +162,15 @@ public class DbHelper  extends SQLiteOpenHelper {
      * @param uid 单位ID
      * @return 指定单位人员Cursor
      */
-    public Cursor getUsersByUnitID(long uid) {
+    public List<User> getUsersByUnitID(long uid) {
         String[] columns = new String[]{COL_GBMC_XM, COL_GBMC_MZ, " csnyStr||'('||cast(strftime('%Y.%m', datetime('now'))-csnyStr as INTEGER)||')' as csnyStr", COL_GBMC_ZW,COL_GBMC_ZJZJ,COL_GBMC_XP, COL_GBMC_ZJ,COL_GBMC_ID + " as _id" };
         String selection = "classid=0 and b.dwID=?";
         String[] selectionArgs = new String[]{String.valueOf(uid)};
         String groupBy = null;
         String having = null;
         String orderBy = COL_GBMC_XH;
-        return mDB.query("tb_cadre_node as b left outer join tb_Cadre as a on a.CadreID=b.ZwCadreID ", columns, selection, selectionArgs, groupBy, having, orderBy);
+        Cursor cursor = mDB.query("tb_cadre_node as b left outer join tb_Cadre as a on a.CadreID=b.ZwCadreID ", columns, selection, selectionArgs, groupBy, having, orderBy);
+        return getListFromCursor(cursor);
     }
 
 

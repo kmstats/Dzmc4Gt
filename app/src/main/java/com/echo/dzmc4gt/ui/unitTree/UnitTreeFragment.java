@@ -19,17 +19,15 @@ import com.echo.dzmc4gt.DbHelper;
 import com.echo.dzmc4gt.MainActivity;
 import com.echo.dzmc4gt.R;
 import com.echo.dzmc4gt.User;
-import com.echo.dzmc4gt.ui.transform.TransformViewModel;
 
 import java.util.List;
+import java.util.Objects;
 
 public class UnitTreeFragment extends Fragment {
 
-    private UnitTreeViewModel mViewModel;
-    private View view;
-    private ExpandableListView expandedListView;
-    private  MainActivity ma;
-    private TransformViewModel transformViewModel;
+    private MainActivity ma;
+    private DbHelper mDbHelper;
+    private ExpandableListAdapter adapter;
 
     public UnitTreeFragment(){
 
@@ -39,13 +37,22 @@ public class UnitTreeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         ma = (MainActivity)getActivity();
-        mViewModel = new ViewModelProvider(this).get(UnitTreeViewModel.class);
-        transformViewModel = ma.getTransformViewModel();
+        mDbHelper = DbHelper.getInstance(ma);
 
-        view = inflater.inflate(R.layout.fragment_unittree, container,false);
-        expandedListView = view.findViewById(R.id.expandableListView);
-        com.echo.dzmc4gt.ui.unitTree.ExpandableListAdapter adapter = new ExpandableListAdapter(ma,mViewModel.gList,mViewModel.cList);
+        UnitTreeViewModel mViewModel = new ViewModelProvider(this).get(UnitTreeViewModel.class);
+
+        View view = inflater.inflate(R.layout.fragment_unittree, container, false);
+        ExpandableListView expandedListView = view.findViewById(R.id.expandableListView);
+        adapter = new ExpandableListAdapter(ma, mViewModel.gList, mViewModel.cList);
         expandedListView.setAdapter(adapter);
+
+        //处理单位树 子节点被点击事件
+        expandedListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            // 处理子项的点击事件
+            long childID = adapter.getChildId(groupPosition,childPosition);
+            ma.setUserList(mDbHelper.getUsersByUnitID(childID));
+            return true;
+        });
 
         //设置搜索框
         SearchView searchView = view.findViewById(R.id.text_search);
@@ -54,31 +61,37 @@ public class UnitTreeFragment extends Fragment {
             public boolean onQueryTextSubmit(String s) {
                 List<User> u;
                 if (s != null) {
-                    u = DbHelper.getInstance(ma.getApplicationContext()).getUsersByName(s);
+                    u = mDbHelper.getUsersByName(s);
                 }else{
-                    u= DbHelper.getInstance(ma.getApplicationContext()).getUsers();
+                    u= mDbHelper.getUsers();
                 }
-                transformViewModel.setUserList(u);
+                ma.setUserList(u);
                 // 隐藏软键盘
                 InputMethodManager imm = (InputMethodManager) ma.getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null && getActivity().getCurrentFocus() != null) {
-                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                if (imm != null && requireActivity().getCurrentFocus() != null) {
+                    imm.hideSoftInputFromWindow(Objects.requireNonNull(Objects.requireNonNull(requireActivity().getCurrentFocus())).getWindowToken(), 0);
                 }
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
-                return false;
+                if (s.isEmpty()) {
+                    //Toast.makeText(ma,"重置",Toast.LENGTH_LONG).show();
+                    ma.setUserList(mDbHelper.getUsers());
+                    return true;
+                } else {
+                    return false;
+                }
             }
         });
 
         return view;
     }
-
+/*
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         //mViewModel = new ViewModelProvider(this).get(UnitTreeViewModel.class);
-    }
+    }*/
 }

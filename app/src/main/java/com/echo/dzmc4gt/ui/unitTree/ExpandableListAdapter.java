@@ -18,9 +18,9 @@ import com.echo.dzmc4gt.Unit;
 import java.util.List;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
-    private Activity a;
-    private List<Unit> gList;
-    private List<List<Unit>> cList;
+    private final Activity a;
+    private final List<Unit> gList;
+    private final List<List<Unit>> cList;
 
     ExpandableListAdapter(Activity activity, List<Unit> groupList, List<List<Unit>> childList) {
         a = activity;
@@ -89,7 +89,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private TextView getTextView() {
         AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT, 64);
+                ViewGroup.LayoutParams.MATCH_PARENT, 64);
         TextView textView = new TextView(a);
         textView.setLayoutParams(lp);
         textView.setGravity(Gravity.CENTER_VERTICAL);

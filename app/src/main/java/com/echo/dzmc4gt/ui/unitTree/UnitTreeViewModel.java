@@ -2,7 +2,6 @@ package com.echo.dzmc4gt.ui.unitTree;
 
 import android.database.Cursor;
 
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.echo.dzmc4gt.DbHelper;
@@ -12,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UnitTreeViewModel extends ViewModel {
-    private MutableLiveData<List<Unit>> groupUnitList;
-    private MutableLiveData<List<List<Unit>>> childUnitList;
     public List<Unit> gList;
     public List<List<Unit>> cList;
 
@@ -23,7 +20,6 @@ public class UnitTreeViewModel extends ViewModel {
 
         DbHelper dbHelper = DbHelper.getInstance(null);
         Cursor cursor = dbHelper.getUnitByPid(112L);
-        int i = 0;
         while(cursor.moveToNext()){
             Unit u = new Unit(cursor.getString(0),cursor.getLong(1));
             gList.add(u);
@@ -35,7 +31,6 @@ public class UnitTreeViewModel extends ViewModel {
                 l.add(su);
             }
             cList.add(l);
-            i++;
         }
     }
 

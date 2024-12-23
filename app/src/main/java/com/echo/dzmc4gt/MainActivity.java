@@ -36,14 +36,13 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     // 定义权限请求码
     private static final int REQUEST_CODE_PERMISSION = 1;
     private AppBarConfiguration mAppBarConfiguration;
-    private DbHelper mDbHelper;
 
-    private TabLayout tableLayout;
     private ViewPager2 viewPager;
 
     private TransformViewModel transformViewModel;
@@ -83,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(navigationView, navController);
 
             //设置tabLayout
-            tableLayout = findViewById(R.id.tabLayout);
+            TabLayout tableLayout = findViewById(R.id.tabLayout);
             viewPager = findViewById(R.id.viewPager);
 
             ArrayList<Fragment> fragments = new ArrayList<>();
@@ -98,12 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
             ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter((this),fragments);
             viewPager.setAdapter(viewPagerAdapter);
-            TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tableLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
-                @Override
-                public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                    tab.setText(titles.get(position));
-                }
-            });
+            TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tableLayout, viewPager, (tab, position) -> tab.setText(titles.get(position)));
             tabLayoutMediator.attach();
         }
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -206,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setDatabase() {
         // 数据库存储目录
-        mDbHelper = DbHelper.getInstance(this);
+        DbHelper mDbHelper = DbHelper.getInstance(this);
         //mDbHelper.close();
         mDbHelper.open();
     }
@@ -224,5 +218,9 @@ public class MainActivity extends AppCompatActivity {
     public void setTvCount(String s){
         TextView tv = findViewById(R.id.tv_Count);
         tv.setText(s);
+    }
+
+    public void setUserList(List<User> users){
+        transformViewModel.setUserList(users);
     }
 }
