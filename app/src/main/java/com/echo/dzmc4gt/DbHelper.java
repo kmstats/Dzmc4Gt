@@ -16,7 +16,6 @@ public class DbHelper  extends SQLiteOpenHelper {
     private static final String TAG = "DbHelper";
     private final String dbName;
     private final Context mCtx;
-    private static DbHelper mHelper = null;
     private SQLiteDatabase mDB = null;
 
     private static final String TABLE_UNIT = "tb_department";
@@ -58,18 +57,19 @@ public class DbHelper  extends SQLiteOpenHelper {
     private static final String COL_RELATE_ZZMM = "zzmm";            //政治面貌
     private static final String COL_RELATE_DWZW = "dw";            //单位职务
 
-    private DbHelper(Context context) {
+    public DbHelper(Context context) {
         super(context, context.getString(R.string.DB_NAME), null, 1);
         mCtx = context;
         dbName = context.getString(R.string.DB_NAME);
+        this.mDB = this.getReadableDatabase();
     }
 
-    public static DbHelper getInstance (Context context){
+/*    public DbHelper getInstance (Context context){
         if (mHelper == null){
             mHelper = new DbHelper(context);
         }
         return mHelper;
-    }
+    }*/
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -78,7 +78,7 @@ public class DbHelper  extends SQLiteOpenHelper {
         if (!dbFile.exists()){
             copyDataBase();
         }
-        mHelper =  DbHelper.getInstance(mCtx);
+        //mHelper =  getInstance(mCtx);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class DbHelper  extends SQLiteOpenHelper {
     public void open(){
         if (mDB == null || !mDB.isOpen()){
             //mDB = mHelper.getWritableDatabase();
-            mDB = mHelper.getReadableDatabase();
+            mDB = this.getReadableDatabase();
         }
     }
     public void close(){
@@ -135,10 +135,8 @@ public class DbHelper  extends SQLiteOpenHelper {
         String[] columns = new String[]{COL_UNIT_NAME, COL_UNIT_ID + " as _id"};
         String selection = COL_UNIT_PID + "=? and DepTag<>2";
         String[] selectionArgs = new String[]{String.valueOf(pid)};
-        String groupBy = null;
-        String having = null;
         String orderBy = "dwLevel,dwOrder";
-        return mDB.query(TABLE_UNIT, columns, selection, selectionArgs, groupBy, having, orderBy);
+        return mDB.query(TABLE_UNIT, columns, selection, selectionArgs, null, null, orderBy);
     }
 
     /**
@@ -148,12 +146,19 @@ public class DbHelper  extends SQLiteOpenHelper {
     public List<User> getUsers() {
         String[] columns = new String[]{COL_GBMC_XM, COL_GBMC_MZ, " csnyStr||'('||cast(strftime('%Y.%m', datetime('now'))-csnyStr as INTEGER)||')' as csnyStr", COL_GBMC_ZW,COL_GBMC_ZJZJ,COL_GBMC_XP, COL_GBMC_ZJ,COL_GBMC_ID + " as _id" };
         String selection = "classid=0";
-        String[] selectionArgs = null;
         String groupBy = "CadreID";
-        String having = null;
-        String orderBy = COL_GBMC_XH;
-        Cursor cursor= mDB.query("tb_cadre_node as b left outer join tb_Cadre as a on a.CadreID=b.ZwCadreID ", columns, selection, selectionArgs, groupBy, having, orderBy);
+        Cursor cursor= mDB.query("tb_cadre_node as b left outer join tb_Cadre as a on a.CadreID=b.ZwCadreID ", columns, selection, null, groupBy, null, COL_GBMC_XH);
         return getListFromCursor(cursor);
+    }
+
+    /**
+     *  执行固定查询，sql语句
+     * @param sql sql语句
+     * @return  返回干部列表
+     */
+    public List<User> getUserBySQL(String sql){
+        Cursor cursor = mDB.rawQuery(sql,null);
+        return  getListFromCursor(cursor);
     }
 
     /**
@@ -166,10 +171,7 @@ public class DbHelper  extends SQLiteOpenHelper {
         String[] columns = new String[]{COL_GBMC_XM, COL_GBMC_MZ, " csnyStr||'('||cast(strftime('%Y.%m', datetime('now'))-csnyStr as INTEGER)||')' as csnyStr", COL_GBMC_ZW,COL_GBMC_ZJZJ,COL_GBMC_XP, COL_GBMC_ZJ,COL_GBMC_ID + " as _id" };
         String selection = "classid=0 and b.dwID=?";
         String[] selectionArgs = new String[]{String.valueOf(uid)};
-        String groupBy = null;
-        String having = null;
-        String orderBy = COL_GBMC_XH;
-        Cursor cursor = mDB.query("tb_cadre_node as b left outer join tb_Cadre as a on a.CadreID=b.ZwCadreID ", columns, selection, selectionArgs, groupBy, having, orderBy);
+        Cursor cursor = mDB.query("tb_cadre_node as b left outer join tb_Cadre as a on a.CadreID=b.ZwCadreID ", columns, selection, selectionArgs, null, null, COL_GBMC_XH);
         return getListFromCursor(cursor);
     }
 
@@ -184,10 +186,7 @@ public class DbHelper  extends SQLiteOpenHelper {
         String[] columns = new String[]{COL_GBMC_ID + " as _id ", COL_GBMC_XM, COL_GBMC_XP, COL_GBMC_XB, " csnyStr||'('||cast(strftime('%Y.%m', datetime('now'))-csnyStr as INTEGER)||')' as csnyStr", COL_GBMC_MZ, COL_GBMC_JG, COL_GBMC_CSD, COL_GBMC_RDSJ, COL_GBMC_CJGZSJ, COL_GBMC_JKZK, COL_GBMC_WHCD, COL_GBMC_BYYX, COL_GBMC_ZZJY, COL_GBMC_ZZBYYX, COL_GBMC_ZW, COL_GBMC_JL, COL_GBMC_JCQK, COL_GBMC_NDKH, COL_GBMC_DXPXQK, COL_GBMC_ZJZJ};
         String selection = COL_GBMC_ID + "=?";
         String[] selectionArgs = new String[]{String.valueOf(id)};
-        String groupBy = null;
-        String having = null;
-        String orderBy = null;
-        Cursor cursor = mDB.query(TABLE_GBMC, columns, selection, selectionArgs, groupBy, having, orderBy);
+        Cursor cursor = mDB.query(TABLE_GBMC, columns, selection, selectionArgs, null, null, null);
         return getListFromCursor(cursor);
     }
 
@@ -201,20 +200,14 @@ public class DbHelper  extends SQLiteOpenHelper {
         String[] columns = new String[]{COL_RELATE_ID + " as _id ", COL_RELATE_CW, COL_RELATE_XM, COL_RELATE_NL, COL_RELATE_ZZMM, COL_RELATE_DWZW};
         String selection = COL_RELATE_ID + "=?";
         String[] selectionArgs = new String[]{String.valueOf(id)};
-        String groupBy = null;
-        String having = null;
-        String orderBy = null;
-        return mDB.query(TABLE_RELATE, columns, selection, selectionArgs, groupBy, having, orderBy);
+        return mDB.query(TABLE_RELATE, columns, selection, selectionArgs, null, null, null);
     }
 
     public List<User> getUsersByName(String name) {
         String[] columns = new String[]{COL_GBMC_XM, COL_GBMC_MZ, COL_GBMC_CSNY, COL_GBMC_ZW, COL_GBMC_ZJZJ, COL_GBMC_XP, COL_GBMC_ZJ, COL_GBMC_ID + " as _id "};
         String selection = COL_GBMC_XM + " like ? or py = ?";
         String[] selectionArgs = new String[]{"%" + name + "%", name};
-        String groupBy = null;
-        String having = null;
-        String orderBy = null;
-        Cursor cursor = mDB.query(TABLE_GBMC, columns, selection, selectionArgs, groupBy, having, orderBy);
+        Cursor cursor = mDB.query(TABLE_GBMC, columns, selection, selectionArgs, null, null, null);
         return getListFromCursor(cursor);
     }
 

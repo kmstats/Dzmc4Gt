@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.echo.dzmc4gt.ui.slideshow.SlideshowFragment;
+import com.echo.dzmc4gt.ui.stubquery.StubQueryFragment;
 import com.echo.dzmc4gt.ui.transform.TransformFragment;
 import com.echo.dzmc4gt.ui.transform.TransformViewModel;
 import com.echo.dzmc4gt.ui.unitTree.UnitTreeFragment;
@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     // 定义权限请求码
     private static final int REQUEST_CODE_PERMISSION = 1;
     private AppBarConfiguration mAppBarConfiguration;
+    private DbHelper dbHelper;
 
     private ViewPager2 viewPager;
 
@@ -59,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
         //设置共享viewMode
         transformViewModel = new ViewModelProvider(this).get(TransformViewModel.class);
+        //初始化所有干部列表
+        transformViewModel.setUserList(dbHelper.getUsers());
 
         //设置工具栏
         setSupportActionBar(binding.appBarMain.toolbar);
@@ -87,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
             ArrayList<Fragment> fragments = new ArrayList<>();
             fragments.add( new UnitTreeFragment());
-            fragments.add(new SlideshowFragment());
+            fragments.add(new StubQueryFragment());
             fragments.add(new TransformFragment());
 
             titles = new ArrayList<>();
@@ -117,6 +121,12 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
         }*/
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbHelper.close();
     }
 
     @Override
@@ -200,16 +210,15 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setDatabase() {
         // 数据库存储目录
-        DbHelper mDbHelper = DbHelper.getInstance(this);
-        //mDbHelper.close();
-        mDbHelper.open();
+        this.dbHelper = new DbHelper(this  );
+        this.dbHelper.open();
     }
 
     /**
-     * 共享Transfer ViewMo
+     * 共享DbHelper
      */
-    public TransformViewModel getTransformViewModel(){
-        return transformViewModel;
+    public DbHelper getDbHelper(){
+        return this.dbHelper;
     }
 
     /**
@@ -220,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
         tv.setText(s);
     }
 
+    public LiveData<List<User>> getUserList() {return transformViewModel.getUserList();}
     public void setUserList(List<User> users){
         transformViewModel.setUserList(users);
     }

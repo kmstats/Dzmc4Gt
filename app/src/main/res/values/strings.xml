@@ -29,4 +29,10 @@
     <string name="DB_NAME">/data/data/com.echo.dzmc4gt/databases/cadre.db</string>
     <string name="BTN_QUERY">搜索</string>
     <string name="SearchHint">输入姓名或拼音</string>
+    <string-array name="stubQuery_list">
+        <item>Item 1</item>
+        <item>Item 2</item>
+        <item>Item 3</item>
+        <!-- 添加更多项 -->
+    </string-array>
 </resources>

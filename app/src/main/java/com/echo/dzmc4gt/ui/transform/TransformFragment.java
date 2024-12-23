@@ -27,14 +27,15 @@ import com.echo.dzmc4gt.databinding.ItemTransformBinding;
  * and shows items using GridLayoutManager in a large screen.
  */
 public class TransformFragment extends Fragment {
-
+    private MainActivity ma;
     private FragmentTransformBinding binding;
     public TransformViewModel transformViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        ma = (MainActivity)getActivity();
         //transformViewModel = new ViewModelProvider(this).get(TransformViewModel.class);
-        transformViewModel = ((MainActivity)getActivity()).getTransformViewModel();
+        //transformViewModel = ((MainActivity)getActivity()).getTransformViewModel();
 
         binding = FragmentTransformBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -42,11 +43,11 @@ public class TransformFragment extends Fragment {
         RecyclerView recyclerView = binding.recyclerviewTransform;
         ListAdapter<User, TransformViewHolder> adapter = new TransformAdapter();
         recyclerView.setAdapter(adapter);
-        transformViewModel.getUserList().observe(getViewLifecycleOwner(), userList -> {
+        ma.getUserList().observe(getViewLifecycleOwner(), userList -> {
             // 执行 adapter 的 submitList 方法
             adapter.submitList(userList);
             // 显示 记录条数
-            ((MainActivity)getActivity()).setTvCount("共 " + userList.size() +" 条记录");
+            ma.setTvCount("共 " + userList.size() +" 条记录");
         });
         return root;
     }

@@ -10,12 +10,10 @@ import com.echo.dzmc4gt.User;
 import java.util.List;
 
 public class TransformViewModel extends ViewModel {
-    private MutableLiveData<List<User>> userList;
+    private final MutableLiveData<List<User>> userList;
 
     public TransformViewModel() {
         userList = new MutableLiveData<>();
-        DbHelper dbHelper = DbHelper.getInstance(null);
-        userList.setValue(dbHelper.getUsers());
     }
 
     public LiveData<List<User>> getUserList() {
