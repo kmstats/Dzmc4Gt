@@ -2,11 +2,13 @@ package com.echo.dzmc4gt.ui.transform;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -46,7 +48,6 @@ public class TransformFragment extends Fragment {
         ma.getUserList().observe(getViewLifecycleOwner(), userList -> {
             // 执行 adapter 的 submitList 方法
             adapter.submitList(userList);
-            // 显示 记录条数
             ma.setTvCount("共 " + userList.size() +" 条记录");
         });
         return root;
@@ -59,6 +60,7 @@ public class TransformFragment extends Fragment {
     }
 
     private static class TransformAdapter extends ListAdapter<User, TransformViewHolder> {
+
         protected TransformAdapter() {
             super(new DiffUtil.ItemCallback<User>() {
                 @Override
@@ -86,13 +88,17 @@ public class TransformFragment extends Fragment {
             Bitmap bmp = Utils.byteToBmp(getItem(position).xp);
             holder.imageView.setImageBitmap(bmp);
             holder.zw_item_transform.setText(getItem(position).zw);
+            holder.userID = getItem(position)._id;
+            holder.bind(holder.userID);
         }
+
     }
 
-    private static class TransformViewHolder extends RecyclerView.ViewHolder {
+    private static class TransformViewHolder extends RecyclerView.ViewHolder{
         private final ImageView imageView;
         private final TextView textView;
         private final TextView zw_item_transform;
+        public String userID;
 
         public TransformViewHolder(ItemTransformBinding binding) {
             super(binding.getRoot());
@@ -100,5 +106,13 @@ public class TransformFragment extends Fragment {
             textView = binding.textViewItemTransform;
             zw_item_transform = binding.zwItemTransform;
         }
+
+        public void bind(String userID) {
+            itemView.setOnClickListener(v -> {
+                Log.d("TransformViewHolder", "Item clicked, user ID: " + userID); // 添加日志输出
+                Toast.makeText(v.getContext(), "点击：用户" + userID, Toast.LENGTH_SHORT).show();
+            });
+        }
+
     }
 }

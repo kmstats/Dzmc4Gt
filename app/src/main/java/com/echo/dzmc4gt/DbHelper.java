@@ -112,7 +112,7 @@ public class DbHelper  extends SQLiteOpenHelper {
                 FileOutputStream fileOutputStream = new FileOutputStream(dbName);
                 byte[] buffer = new byte[1024];
                 int read;
-                InputStream inputStream = mCtx.getAssets().open("files/" + dbName);
+                InputStream inputStream = mCtx.getAssets().open("files/cadre.db");
                 while ((read = inputStream.read(buffer)) != -1) {
                     fileOutputStream.write(buffer, 0, read);
                 }
