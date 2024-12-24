@@ -6,17 +6,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DbHelper  extends SQLiteOpenHelper {
-    private static final String TAG = "DbHelper";
+    private final String TAG;
+    private final String dbPath;
     private final String dbName;
     private final Context mCtx;
-    private SQLiteDatabase mDB = null;
+    private SQLiteDatabase mDB;
 
     private static final String TABLE_UNIT = "tb_department";
     private static final String TABLE_GBMC = "tb_cadre";
@@ -60,25 +62,19 @@ public class DbHelper  extends SQLiteOpenHelper {
     public DbHelper(Context context) {
         super(context, context.getString(R.string.DB_NAME), null, 1);
         mCtx = context;
+        TAG = context.getString(R.string.TAG);
+        dbPath = context.getString(R.string.DB_PTAH);
         dbName = context.getString(R.string.DB_NAME);
         this.mDB = this.getReadableDatabase();
     }
 
-/*    public DbHelper getInstance (Context context){
-        if (mHelper == null){
-            mHelper = new DbHelper(context);
-        }
-        return mHelper;
-    }*/
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG,"打开...");
-        File dbFile = new File(dbName);
+        File dbFile = new File(mCtx.getDatabasePath(dbName).getPath());
         if (!dbFile.exists()){
-            copyDataBase();
+            copyDataBaseFromAssets();
         }
-        //mHelper =  getInstance(mCtx);
     }
 
     @Override
@@ -105,21 +101,29 @@ public class DbHelper  extends SQLiteOpenHelper {
     /**
      * 从资源复制数据库
      */
-    private void copyDataBase() {
+    private void copyDataBaseFromAssets() {
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
         try{
-            File file = new File(dbName);
-            if (!file.exists()) {
-                FileOutputStream fileOutputStream = new FileOutputStream(dbName);
-                byte[] buffer = new byte[1024];
-                int read;
-                InputStream inputStream = mCtx.getAssets().open("files/cadre.db");
-                while ((read = inputStream.read(buffer)) != -1) {
-                    fileOutputStream.write(buffer, 0, read);
-                }
-                fileOutputStream.close();
+            inputStream = mCtx.getAssets().open(dbName);
+            File outFile = new File(mCtx.getDatabasePath(dbName).getPath());
+            outputStream = Files.newOutputStream(outFile.toPath());
+
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = inputStream.read(buffer)) > 0) {
+                 outputStream.write(buffer, 0, read);
             }
+            outputStream.flush();
         }catch (IOException e){
-            Log.e("错误:",e.toString());
+            Log.e(TAG,e.toString());
+        }finally {
+            try {
+                if (inputStream != null)  inputStream.close();
+                if (outputStream != null) outputStream.close();
+            }catch(IOException e){
+                Log.e(TAG,e.toString());
+            }
         }
     }
 
@@ -174,7 +178,6 @@ public class DbHelper  extends SQLiteOpenHelper {
         Cursor cursor = mDB.query("tb_cadre_node as b left outer join tb_Cadre as a on a.CadreID=b.ZwCadreID ", columns, selection, selectionArgs, null, null, COL_GBMC_XH);
         return getListFromCursor(cursor);
     }
-
 
     /**
      * 取得干部信息

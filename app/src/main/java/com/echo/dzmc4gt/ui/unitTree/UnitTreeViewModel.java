@@ -1,11 +1,7 @@
 package com.echo.dzmc4gt.ui.unitTree;
 
-import android.database.Cursor;
-
 import androidx.lifecycle.ViewModel;
 
-import com.echo.dzmc4gt.DbHelper;
-import com.echo.dzmc4gt.MainActivity;
 import com.echo.dzmc4gt.Unit;
 
 import java.util.ArrayList;

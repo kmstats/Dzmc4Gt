@@ -44,12 +44,10 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_PERMISSION = 1;
     private AppBarConfiguration mAppBarConfiguration;
     private DbHelper dbHelper;
-
     private ViewPager2 viewPager;
-
     private TransformViewModel transformViewModel;
     ArrayList<String> titles;
-
+    NavHostFragment navHostFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         checkAndRequestPermissions();
@@ -72,9 +70,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //设置主显示区
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+        navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
         assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();
+
 
         NavigationView navigationView = binding.navView;
         if (navigationView != null) {
@@ -104,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
             TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tableLayout, viewPager, (tab, position) -> tab.setText(titles.get(position)));
             tabLayoutMediator.attach();
         }
+
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -121,9 +121,10 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
         }*/
+        navController.navigate(R.id.nav_slideshow);
     }
 
-    @Override
+     @Override
     protected void onDestroy() {
         super.onDestroy();
         dbHelper.close();

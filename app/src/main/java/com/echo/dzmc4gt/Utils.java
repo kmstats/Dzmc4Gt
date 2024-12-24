@@ -32,7 +32,7 @@ public class Utils {
      *            原图片
      * @return 压缩后的图片
      */
-    private static Bitmap compressImage(Bitmap image) {
+    public static Bitmap compressImage(Bitmap image) {
         Bitmap bitmap = null;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);// 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
@@ -60,7 +60,7 @@ public class Utils {
      *            原字符串
      * @return 替换后的字符串
      */
-    private static String getBRString(String s) {
+    public static String getBRString(String s) {
         if (s != null) {
             return s.replace("\r\n", "<br>");
         }else{
@@ -75,7 +75,7 @@ public class Utils {
      *            原图片
      * @return 图片Base64码
      */
-    private static String imgToBase64(Bitmap bitmap) {
+    public static String imgToBase64(Bitmap bitmap) {
         ByteArrayOutputStream out = null;
         try {
             out = new ByteArrayOutputStream();
