@@ -1,5 +1,6 @@
 package com.echo.dzmc4gt.ui.transform;
 
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,10 +18,13 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.echo.dzmc4gt.MainActivity;
+import com.echo.dzmc4gt.R;
 import com.echo.dzmc4gt.User;
 import com.echo.dzmc4gt.Utils;
 import com.echo.dzmc4gt.databinding.FragmentTransformBinding;
 import com.echo.dzmc4gt.databinding.ItemTransformBinding;
+
+import java.util.ArrayList;
 
 /**
  * Fragment that demonstrates a responsive layout pattern where the format of the content
@@ -29,16 +33,12 @@ import com.echo.dzmc4gt.databinding.ItemTransformBinding;
  * and shows items using GridLayoutManager in a large screen.
  */
 public class TransformFragment extends Fragment {
-    private MainActivity ma;
+    private static MainActivity ma ;
     private FragmentTransformBinding binding;
-    public TransformViewModel transformViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         ma = (MainActivity)getActivity();
-        //transformViewModel = new ViewModelProvider(this).get(TransformViewModel.class);
-        //transformViewModel = ((MainActivity)getActivity()).getTransformViewModel();
-
         binding = FragmentTransformBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -111,6 +111,13 @@ public class TransformFragment extends Fragment {
             itemView.setOnClickListener(v -> {
                 Log.d("TransformViewHolder", "Item clicked, user ID: " + userID); // 添加日志输出
                 Toast.makeText(v.getContext(), "点击：用户" + userID, Toast.LENGTH_SHORT).show();
+                ArrayList<Cursor> list = new ArrayList<>();
+                Cursor cursor1 = ma.getDbHelper().getUserInfoByID(Long.parseLong(userID));
+                Cursor cursor2 = ma.getDbHelper().getRelateById(Long.parseLong(userID));
+                list.add(cursor1);
+                list.add(cursor2);
+                ma.setCursorList(list);
+                ma.setNavControl(R.id.nav_userinfo);
             });
         }
 

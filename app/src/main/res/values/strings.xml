@@ -31,6 +31,7 @@
     <string name="BTN_QUERY">搜索</string>
     <string name="SearchHint">输入姓名或拼音</string>
     <string name="TAG">错误：</string>
+    <string name="menu_userinfo">干部详细信息</string>
     <string-array name="stubQuery_list">
         <item>Item 1</item>
         <item>Item 2</item>

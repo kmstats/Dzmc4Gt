@@ -185,12 +185,11 @@ public class DbHelper  extends SQLiteOpenHelper {
      * @param id 人员ID
      * @return 人员信息Cursor
      */
-    public List<User> getUserInfoByID(long id) {
+    public Cursor getUserInfoByID(long id) {
         String[] columns = new String[]{COL_GBMC_ID + " as _id ", COL_GBMC_XM, COL_GBMC_XP, COL_GBMC_XB, " csnyStr||'('||cast(strftime('%Y.%m', datetime('now'))-csnyStr as INTEGER)||')' as csnyStr", COL_GBMC_MZ, COL_GBMC_JG, COL_GBMC_CSD, COL_GBMC_RDSJ, COL_GBMC_CJGZSJ, COL_GBMC_JKZK, COL_GBMC_WHCD, COL_GBMC_BYYX, COL_GBMC_ZZJY, COL_GBMC_ZZBYYX, COL_GBMC_ZW, COL_GBMC_JL, COL_GBMC_JCQK, COL_GBMC_NDKH, COL_GBMC_DXPXQK, COL_GBMC_ZJZJ};
         String selection = COL_GBMC_ID + "=?";
         String[] selectionArgs = new String[]{String.valueOf(id)};
-        Cursor cursor = mDB.query(TABLE_GBMC, columns, selection, selectionArgs, null, null, null);
-        return getListFromCursor(cursor);
+        return mDB.query(TABLE_GBMC, columns, selection, selectionArgs, null, null, null);
     }
 
     /**

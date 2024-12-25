@@ -2,6 +2,7 @@ package com.echo.dzmc4gt;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -15,6 +16,7 @@ import com.echo.dzmc4gt.ui.stubquery.StubQueryFragment;
 import com.echo.dzmc4gt.ui.transform.TransformFragment;
 import com.echo.dzmc4gt.ui.transform.TransformViewModel;
 import com.echo.dzmc4gt.ui.unitTree.UnitTreeFragment;
+import com.echo.dzmc4gt.ui.userinfo.UserInfoViewModel;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -46,8 +48,10 @@ public class MainActivity extends AppCompatActivity {
     private DbHelper dbHelper;
     private ViewPager2 viewPager;
     private TransformViewModel transformViewModel;
+    private UserInfoViewModel userInfoViewModel;
     ArrayList<String> titles;
     NavHostFragment navHostFragment;
+    private NavController navController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         checkAndRequestPermissions();
@@ -59,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         //设置共享viewMode
         transformViewModel = new ViewModelProvider(this).get(TransformViewModel.class);
+        userInfoViewModel = new ViewModelProvider(this).get(UserInfoViewModel.class);
         //初始化所有干部列表
         transformViewModel.setUserList(dbHelper.getUsers());
 
@@ -72,13 +77,14 @@ public class MainActivity extends AppCompatActivity {
         //设置主显示区
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
         assert navHostFragment != null;
-        NavController navController = navHostFragment.getNavController();
+        navController = navHostFragment.getNavController();
 
 
         NavigationView navigationView = binding.navView;
         if (navigationView != null) {
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_transform, R.id.nav_reflow, R.id.nav_slideshow, R.id.nav_settings)
+                    //R.id.nav_transform, R.id.nav_reflow, R.id.nav_slideshow, R.id.nav_settings)
+                    R.id.nav_transform, R.id.wv_user)
                     .setOpenableLayout(binding.drawerLayout)
                     .build();
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
@@ -121,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
         }*/
-        navController.navigate(R.id.nav_slideshow);
+        //navController.navigate(R.id.nav_slideshow);
     }
 
      @Override
@@ -233,5 +239,13 @@ public class MainActivity extends AppCompatActivity {
     public LiveData<List<User>> getUserList() {return transformViewModel.getUserList();}
     public void setUserList(List<User> users){
         transformViewModel.setUserList(users);
+    }
+
+    public LiveData<List<Cursor>> getCursorList() {return userInfoViewModel.getCursorList();};
+    public void setCursorList(List<Cursor> list) {userInfoViewModel.setCursorList(list);}
+
+    //设置主显示页面的导航    resourceID 为 fragment ID
+    public void setNavControl(int resourceID){
+        navController.navigate(resourceID);
     }
 }

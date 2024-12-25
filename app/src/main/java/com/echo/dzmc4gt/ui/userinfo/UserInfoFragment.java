@@ -19,6 +19,7 @@ import android.webkit.WebView;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
 
+import com.echo.dzmc4gt.MainActivity;
 import com.echo.dzmc4gt.R;
 import com.echo.dzmc4gt.Utils;
 
@@ -28,27 +29,31 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class UserInfoFragment extends Fragment {
-
+    private UserInfoViewModel userInfoViewModel;
+    private static MainActivity ma;
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        UserInfoViewModel mViewModel = new ViewModelProvider(this).get(UserInfoViewModel.class);
+        ma = (MainActivity)getActivity();
         View view = inflater.inflate(R.layout.fragment_user_info, container, false);
 
         WebView webView = view.findViewById(R.id.wv_user);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
-        String webData = getUserInfoData(mViewModel.getCursorList().getValue());
+        String webData = getUserInfoData(ma.getCursorList().getValue());
+        String s = "file:///android_asset";
+        webView.loadDataWithBaseURL(s, webData,
+                "text/html", "UTF-8", "");
 
-        // 加载网页
+/*        // 加载网页
         webView.loadUrl("https://www.example.com");
-        mViewModel.getCursorList().observe(getViewLifecycleOwner(), cursors -> {
+        userInfoViewModel.getCursorList().observe(getViewLifecycleOwner(), cursors -> {
             String s = "file:///android_asset";
             webView.loadDataWithBaseURL(s, webData,
                     "text/html", "UTF-8", "");
-        });
+        });*/
         return view;
     }
 
@@ -73,6 +78,7 @@ public class UserInfoFragment extends Fragment {
             res = new String(buffer, StandardCharsets.UTF_8);
 
             Cursor c = cursorList.get(0);
+            if (c != null) {c.moveToFirst();}
             res = res.replace("@name", c.getString(1) != null ? c.getString(1) : "");
             Bitmap b = Utils.byteToBmp(c.getBlob(2));
             if (b != null) {
