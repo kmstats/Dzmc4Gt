@@ -1,7 +1,5 @@
 package com.echo.dzmc4gt.ui.userinfo;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,10 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import com.echo.dzmc4gt.CustomWebView;
 import com.echo.dzmc4gt.MainActivity;
@@ -31,13 +27,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class UserInfoFragment extends Fragment implements CustomWebView.OnRightSwipeListener {
-    private UserInfoViewModel userInfoViewModel;
-    private static MainActivity ma;
+    private MainActivity ma;
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        ma = (MainActivity)getActivity();
+        ma = (MainActivity) getActivity();
         View view = inflater.inflate(R.layout.fragment_user_info, container, false);
 
         com.echo.dzmc4gt.CustomWebView webView = view.findViewById(R.id.wv_user);
@@ -66,7 +61,7 @@ public class UserInfoFragment extends Fragment implements CustomWebView.OnRightS
     @Override
     public void onRightSwipe() {
         // 在这里处理右滑逻辑，比如加载下一页或执行其他操作
-        Toast.makeText(getContext(), "右滑了！", Toast.LENGTH_SHORT).show();
+        ma.setNavControl(R.id.nav_transform);
     }
 
  /*   @Override

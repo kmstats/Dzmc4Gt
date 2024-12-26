@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.comquery.ComQueryFragment">
+
+    <LinearLayout
+        android:layout_width="256dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <RadioButton
+                android:id="@+id/rbNV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="女" />
+
+            <RadioButton
+                android:id="@+id/rbMZ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="少数民族" />
+
+            <RadioButton
+                android:id="@+id/rbFEIDANG"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="非中共党员" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="年龄段" />
+
+                <LinearLayout
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <NumberPicker
+                        android:id="@+id/numberPicker1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:minValue="0"
+                        android:maxValue="100"
+                        android:value="50"
+                        android:wrapSelectorWheel="true"
+                        android:descendantFocusability="blocksDescendants"  />
+
+                    <NumberPicker
+                        android:id="@+id/numberPicker2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minValue="0"
+                        android:maxValue="100"
+                        android:value="50"
+                        android:wrapSelectorWheel="true"
+                        android:descendantFocusability="blocksDescendants"  />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="职   级" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox1"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="正处" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox2"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="副处" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox3"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="正科" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox4"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="副科" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox5"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="科员" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

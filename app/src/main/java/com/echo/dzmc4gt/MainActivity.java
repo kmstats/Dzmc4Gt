@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.echo.dzmc4gt.ui.comquery.ComQueryFragment;
 import com.echo.dzmc4gt.ui.stubquery.StubQueryFragment;
 import com.echo.dzmc4gt.ui.transform.TransformFragment;
 import com.echo.dzmc4gt.ui.transform.TransformViewModel;
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<Fragment> fragments = new ArrayList<>();
             fragments.add( new UnitTreeFragment());
             fragments.add(new StubQueryFragment());
-            fragments.add(new TransformFragment());
+            fragments.add(new ComQueryFragment());
 
             titles = new ArrayList<>();
             titles.add(getString(R.string.unitTree));

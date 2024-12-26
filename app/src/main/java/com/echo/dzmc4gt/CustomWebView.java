@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 // CustomWebView.java
@@ -31,9 +30,21 @@ public class CustomWebView extends WebView {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 // 判断右滑，条件是水平方向速度足够大且垂直方向速度较小
-                if (e1.getX() - e2.getX() > SWIPE_THRESHOLD && Math.abs(e1.getY() - e2.getY()) < SWIPE_THRESHOLD_VERTICAL) {
+               /* if (e1.getX() - e2.getX() > SWIPE_THRESHOLD && Math.abs(e1.getY() - e2.getY()) < SWIPE_THRESHOLD_VERTICAL) {
                     onRightSwipe();
                     return true;
+                }
+                return false;*/
+
+                try {
+                    if (e1.getX() - e2.getX() < -89) {
+                        onRightSwipe();
+                        return true;
+                    } else if (e1.getX() - e2.getX() > 89) {
+                        //onRightSwipe();
+                        //return true;
+                    }
+                } catch (Exception e) {
                 }
                 return false;
             }
@@ -68,6 +79,8 @@ public class CustomWebView extends WebView {
     }
 
     // 你可以根据需要调整这些阈值
-    private static final int SWIPE_THRESHOLD = 100;
-    private static final int SWIPE_THRESHOLD_VERTICAL = 50;
+    private static final int SWIPE_THRESHOLD = 20;
+    private static final int SWIPE_THRESHOLD_VERTICAL = 10;
+    private static final float SWIPE_THRESHOLD_PERCENTAGE = 0.3f; // 30%的屏幕宽度
+    private static final float SWIPE_THRESHOLD_VERTICAL_PERCENTAGE = 0.05f;
 }
