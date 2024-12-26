@@ -18,7 +18,9 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
+import com.echo.dzmc4gt.CustomWebView;
 import com.echo.dzmc4gt.MainActivity;
 import com.echo.dzmc4gt.R;
 import com.echo.dzmc4gt.Utils;
@@ -28,7 +30,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-public class UserInfoFragment extends Fragment {
+public class UserInfoFragment extends Fragment implements CustomWebView.OnRightSwipeListener {
     private UserInfoViewModel userInfoViewModel;
     private static MainActivity ma;
     @SuppressLint("SetJavaScriptEnabled")
@@ -38,7 +40,7 @@ public class UserInfoFragment extends Fragment {
         ma = (MainActivity)getActivity();
         View view = inflater.inflate(R.layout.fragment_user_info, container, false);
 
-        WebView webView = view.findViewById(R.id.wv_user);
+        com.echo.dzmc4gt.CustomWebView webView = view.findViewById(R.id.wv_user);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
@@ -46,6 +48,9 @@ public class UserInfoFragment extends Fragment {
         String s = "file:///android_asset";
         webView.loadDataWithBaseURL(s, webData,
                 "text/html", "UTF-8", "");
+        webView.setOnRightSwipeListener(this);
+
+
 
 /*        // 加载网页
         webView.loadUrl("https://www.example.com");
@@ -55,6 +60,13 @@ public class UserInfoFragment extends Fragment {
                     "text/html", "UTF-8", "");
         });*/
         return view;
+    }
+
+    // 实现接口中的方法
+    @Override
+    public void onRightSwipe() {
+        // 在这里处理右滑逻辑，比如加载下一页或执行其他操作
+        Toast.makeText(getContext(), "右滑了！", Toast.LENGTH_SHORT).show();
     }
 
  /*   @Override

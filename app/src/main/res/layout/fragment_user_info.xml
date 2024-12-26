@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.userinfo.UserInfoFragment">
 
-    <WebView
+    <com.echo.dzmc4gt.CustomWebView
         android:id="@+id/wv_user"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
