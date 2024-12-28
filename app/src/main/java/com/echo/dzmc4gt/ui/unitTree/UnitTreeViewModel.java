@@ -14,6 +14,9 @@ public class UnitTreeViewModel extends ViewModel {
     public UnitTreeViewModel(){
         gList = new ArrayList<>();
         cList = new ArrayList<>();
+    }
+
+    public void setUnitTree(){
 
     }
 

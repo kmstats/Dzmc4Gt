@@ -32,6 +32,16 @@
     <string name="SearchHint">输入姓名或拼音</string>
     <string name="TAG">错误：</string>
     <string name="menu_userinfo">干部详细信息</string>
+    <string name="OPT_NV">女</string>
+    <string name="OPE_SHAO">少数民族</string>
+    <string name="CHB_ZHENGCHU">正处</string>
+    <string name="CHB_FUCHU">副处</string>
+    <string name="CHB_ZHENGKE">正科</string>
+    <string name="CHB_FUKE">副科</string>
+    <string name="CHEB_KEYUAN">科员</string>
+    <string name="OPE_FEIDANG">非中共党员</string>
+    <string name="LAB_AGEGROUP">年龄段</string>
+    <string name="LAB_ZHIJI">职 级</string>
     <string-array name="stubQuery_list">
         <item>Item 1</item>
         <item>Item 2</item>

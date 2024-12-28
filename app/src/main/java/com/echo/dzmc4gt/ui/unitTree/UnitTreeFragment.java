@@ -31,6 +31,7 @@ public class UnitTreeFragment extends Fragment {
     private MainActivity ma;
     private DbHelper mDbHelper;
     private ExpandableListAdapter adapter;
+    UnitTreeViewModel mViewModel;
 
     public UnitTreeFragment(){
 
@@ -41,20 +42,8 @@ public class UnitTreeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         ma = (MainActivity)getActivity();
         mDbHelper = ma.getDbHelper();
+        mViewModel = ma.getUnitTreeViewModel();
 
-        UnitTreeViewModel mViewModel = new ViewModelProvider(this).get(UnitTreeViewModel.class);
-        Cursor cursor = mDbHelper.getUnitByPid(112L);
-        while(cursor.moveToNext()){
-            Unit u = new Unit(cursor.getString(0),cursor.getLong(1));
-            mViewModel.gList.add(u);
-            Cursor cc = mDbHelper.getUnitByPid(u.id);
-            List<Unit> l = new ArrayList<>();
-            while(cc.moveToNext()){
-                Unit su = new Unit(cc.getString(0),cc.getLong(1));
-                l.add(su);
-            }
-            mViewModel.cList.add(l);
-        }
 
         View view = inflater.inflate(R.layout.fragment_unittree, container, false);
         ExpandableListView expandedListView = view.findViewById(R.id.expandableListView);
@@ -102,10 +91,6 @@ public class UnitTreeFragment extends Fragment {
 
         return view;
     }
-/*
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        //mViewModel = new ViewModelProvider(this).get(UnitTreeViewModel.class);
-    }*/
+
+
 }

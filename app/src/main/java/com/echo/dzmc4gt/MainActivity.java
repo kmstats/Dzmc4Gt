@@ -14,9 +14,9 @@ import android.widget.Toast;
 
 import com.echo.dzmc4gt.ui.comquery.ComQueryFragment;
 import com.echo.dzmc4gt.ui.stubquery.StubQueryFragment;
-import com.echo.dzmc4gt.ui.transform.TransformFragment;
 import com.echo.dzmc4gt.ui.transform.TransformViewModel;
 import com.echo.dzmc4gt.ui.unitTree.UnitTreeFragment;
+import com.echo.dzmc4gt.ui.unitTree.UnitTreeViewModel;
 import com.echo.dzmc4gt.ui.userinfo.UserInfoViewModel;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
     private TransformViewModel transformViewModel;
     private UserInfoViewModel userInfoViewModel;
+    private UnitTreeViewModel unitTreeViewModel;
+
     ArrayList<String> titles;
     NavHostFragment navHostFragment;
     private NavController navController;
@@ -65,8 +67,11 @@ public class MainActivity extends AppCompatActivity {
         //设置共享viewMode
         transformViewModel = new ViewModelProvider(this).get(TransformViewModel.class);
         userInfoViewModel = new ViewModelProvider(this).get(UserInfoViewModel.class);
+        unitTreeViewModel = new ViewModelProvider(this).get(UnitTreeViewModel.class);
         //初始化所有干部列表
         transformViewModel.setUserList(dbHelper.getUsers());
+        //初始化单位树
+        initUnitTree();
 
         //设置工具栏
         setSupportActionBar(binding.appBarMain.toolbar);
@@ -237,16 +242,36 @@ public class MainActivity extends AppCompatActivity {
         tv.setText(s);
     }
 
+    public UnitTreeViewModel getUnitTreeViewModel() {return unitTreeViewModel;}
+
     public LiveData<List<User>> getUserList() {return transformViewModel.getUserList();}
     public void setUserList(List<User> users){
         transformViewModel.setUserList(users);
     }
 
-    public LiveData<List<Cursor>> getCursorList() {return userInfoViewModel.getCursorList();};
+    public LiveData<List<Cursor>> getCursorList() {return userInfoViewModel.getCursorList();}
+
     public void setCursorList(List<Cursor> list) {userInfoViewModel.setCursorList(list);}
 
     //设置主显示页面的导航    resourceID 为 fragment ID
     public void setNavControl(int resourceID){
         navController.navigate(resourceID);
+    }
+
+    private void initUnitTree() {
+        if (unitTreeViewModel.gList.size() == 0 ) {
+            Cursor cursor = dbHelper.getUnitByPid(112L);
+            while (cursor.moveToNext()) {
+                Unit u = new Unit(cursor.getString(0), cursor.getLong(1));
+                unitTreeViewModel.gList.add(u);
+                Cursor cc = dbHelper.getUnitByPid(u.id);
+                List<Unit> l = new ArrayList<>();
+                while (cc.moveToNext()) {
+                    Unit su = new Unit(cc.getString(0), cc.getLong(1));
+                    l.add(su);
+                }
+                unitTreeViewModel.cList.add(l);
+            }
+        }
     }
 }

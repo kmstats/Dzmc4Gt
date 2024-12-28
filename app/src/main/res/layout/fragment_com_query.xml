@@ -1,55 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.comquery.ComQueryFragment">
 
     <LinearLayout
-        android:layout_width="256dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp">
+            android:layout_margin="8dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/rbNV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="女" />
+                android:text="@string/OPT_NV" />
 
             <RadioButton
                 android:id="@+id/rbMZ"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="少数民族" />
+                android:text="@string/OPE_SHAO" />
 
             <RadioButton
                 android:id="@+id/rbFEIDANG"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="非中共党员" />
+                android:text="@string/OPE_FEIDANG" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:padding="8dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:layout_weight="1"
+                android:background="@color/white"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -58,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="年龄段" />
+                    android:text="@string/LAB_AGEGROUP" />
 
                 <LinearLayout
                     android:layout_width="200dp"
@@ -68,71 +70,89 @@
 
                     <NumberPicker
                         android:id="@+id/numberPicker1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:minValue="0"
-                        android:maxValue="100"
-                        android:value="50"
-                        android:wrapSelectorWheel="true"
-                        android:descendantFocusability="blocksDescendants"  />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                     <NumberPicker
                         android:id="@+id/numberPicker2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minValue="0"
-                        android:maxValue="100"
-                        android:value="50"
-                        android:wrapSelectorWheel="true"
-                        android:descendantFocusability="blocksDescendants"  />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
 
                     <TextView
                         android:id="@+id/textView4"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="225dp"
                         android:gravity="center"
-                        android:text="职   级" />
+                        android:text="@string/LAB_ZHIJI"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <CheckBox
                         android:id="@+id/checkBox1"
-                        android:layout_width="100dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="正处" />
+                        android:layout_marginTop="8dp"
+                        android:text="@string/CHB_ZHENGCHU"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView4" />
 
                     <CheckBox
                         android:id="@+id/checkBox2"
-                        android:layout_width="100dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="副处" />
+                        android:layout_marginTop="8dp"
+                        android:text="@string/CHB_FUCHU"
+                        app:layout_constraintStart_toEndOf="@+id/checkBox1"
+                        app:layout_constraintTop_toBottomOf="@id/textView4" />
 
                     <CheckBox
                         android:id="@+id/checkBox3"
-                        android:layout_width="100dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="正科" />
+                        android:layout_marginTop="8dp"
+                        android:text="@string/CHB_ZHENGKE"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/checkBox1" />
 
                     <CheckBox
                         android:id="@+id/checkBox4"
-                        android:layout_width="100dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="副科" />
+                        android:layout_marginTop="8dp"
+                        android:text="@string/CHB_FUKE"
+                        app:layout_constraintStart_toEndOf="@+id/checkBox3"
+                        app:layout_constraintTop_toBottomOf="@id/checkBox2" />
 
                     <CheckBox
                         android:id="@+id/checkBox5"
-                        android:layout_width="100dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="科员" />
+                        android:layout_marginTop="8dp"
+                        android:text="@string/CHEB_KEYUAN"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/checkBox3" />
 
-                </LinearLayout>
-
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
 
         </LinearLayout>
