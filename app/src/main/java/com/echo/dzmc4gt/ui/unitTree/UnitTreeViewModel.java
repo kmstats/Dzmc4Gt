@@ -15,9 +15,4 @@ public class UnitTreeViewModel extends ViewModel {
         gList = new ArrayList<>();
         cList = new ArrayList<>();
     }
-
-    public void setUnitTree(){
-
-    }
-
 }

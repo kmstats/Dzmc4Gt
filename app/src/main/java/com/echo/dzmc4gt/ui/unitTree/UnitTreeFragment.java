@@ -1,8 +1,6 @@
 package com.echo.dzmc4gt.ui.unitTree;
 
-import androidx.lifecycle.ViewModelProvider;
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,10 +17,8 @@ import android.widget.SearchView;
 import com.echo.dzmc4gt.DbHelper;
 import com.echo.dzmc4gt.MainActivity;
 import com.echo.dzmc4gt.R;
-import com.echo.dzmc4gt.Unit;
 import com.echo.dzmc4gt.User;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,9 +37,12 @@ public class UnitTreeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         ma = (MainActivity)getActivity();
-        mDbHelper = ma.getDbHelper();
-        mViewModel = ma.getUnitTreeViewModel();
-
+        if (ma != null) {
+            mDbHelper = ma.getDbHelper();
+        }
+        if (ma != null) {
+            mViewModel = ma.getUnitTreeViewModel();
+        }
 
         View view = inflater.inflate(R.layout.fragment_unittree, container, false);
         ExpandableListView expandedListView = view.findViewById(R.id.expandableListView);
@@ -91,6 +90,4 @@ public class UnitTreeFragment extends Fragment {
 
         return view;
     }
-
-
 }

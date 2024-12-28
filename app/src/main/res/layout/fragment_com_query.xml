@@ -18,27 +18,33 @@
             android:background="@color/white"
             android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/rbNV"
+            <CheckBox
+                android:id="@+id/checkBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/OPT_NV" />
+                android:text="女" />
 
-            <RadioButton
-                android:id="@+id/rbMZ"
+            <CheckBox
+                android:id="@+id/checkBox6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/OPE_SHAO" />
+                android:text="少" />
 
-            <RadioButton
-                android:id="@+id/rbFEIDANG"
+            <CheckBox
+                android:id="@+id/checkBox7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/OPE_FEIDANG" />
+                android:text="非" />
 
+            <CheckBox
+                android:id="@+id/checkBox8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="事业单位" />
         </LinearLayout>
 
         <LinearLayout
@@ -50,7 +56,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:layout_weight="1"
                 android:background="@color/white"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -83,78 +88,93 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:layout_weight="1"
                 android:background="@color/white"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal" >
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/linearLayout"
+                <CheckBox
+                    android:id="@+id/checkBox2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center">
+                    android:layout_weight="1"
+                    android:text="正处" />
 
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="225dp"
-                        android:gravity="center"
-                        android:text="@string/LAB_ZHIJI"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                <CheckBox
+                    android:id="@+id/checkBox3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="副处" />
 
-                    <CheckBox
-                        android:id="@+id/checkBox1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/CHB_ZHENGCHU"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/textView4" />
+                <CheckBox
+                    android:id="@+id/checkBox4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="正科" />
 
-                    <CheckBox
-                        android:id="@+id/checkBox2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/CHB_FUCHU"
-                        app:layout_constraintStart_toEndOf="@+id/checkBox1"
-                        app:layout_constraintTop_toBottomOf="@id/textView4" />
+                <CheckBox
+                    android:id="@+id/checkBox5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="副科" />
 
-                    <CheckBox
-                        android:id="@+id/checkBox3"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/CHB_ZHENGKE"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/checkBox1" />
+                <CheckBox
+                    android:id="@+id/checkBox9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="科员" />
 
-                    <CheckBox
-                        android:id="@+id/checkBox4"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/CHB_FUKE"
-                        app:layout_constraintStart_toEndOf="@+id/checkBox3"
-                        app:layout_constraintTop_toBottomOf="@id/checkBox2" />
-
-                    <CheckBox
-                        android:id="@+id/checkBox5"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/CHEB_KEYUAN"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/checkBox3" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                <CheckBox
+                    android:id="@+id/checkBox10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="其他" />
             </LinearLayout>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <SearchView
+                android:id="@+id/sv_JL"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:autofillHints="test"
+                android:queryHint="@string/JLSearchHint" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="重置" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="查询" />
         </LinearLayout>
 
     </LinearLayout>

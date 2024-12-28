@@ -42,6 +42,7 @@
     <string name="OPE_FEIDANG">非中共党员</string>
     <string name="LAB_AGEGROUP">年龄段</string>
     <string name="LAB_ZHIJI">职 级</string>
+    <string name="JLSearchHint">在简历中查找关键字</string>
     <string-array name="stubQuery_list">
         <item>Item 1</item>
         <item>Item 2</item>
