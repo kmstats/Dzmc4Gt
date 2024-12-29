@@ -19,28 +19,28 @@
             android:orientation="horizontal">
 
             <CheckBox
-                android:id="@+id/checkBox"
+                android:id="@+id/cb_nv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="女" />
 
             <CheckBox
-                android:id="@+id/checkBox6"
+                android:id="@+id/cb_shao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="少" />
 
             <CheckBox
-                android:id="@+id/checkBox7"
+                android:id="@+id/cb_fei"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="非" />
 
             <CheckBox
-                android:id="@+id/checkBox8"
+                android:id="@+id/cb_shiye"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -76,7 +76,8 @@
                     <NumberPicker
                         android:id="@+id/numberPicker1"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp" />
 
                     <NumberPicker
                         android:id="@+id/numberPicker2"
@@ -95,42 +96,42 @@
                 android:orientation="horizontal" >
 
                 <CheckBox
-                    android:id="@+id/checkBox2"
+                    android:id="@+id/cb_zhengchu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="正处" />
 
                 <CheckBox
-                    android:id="@+id/checkBox3"
+                    android:id="@+id/cb_fuchu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="副处" />
 
                 <CheckBox
-                    android:id="@+id/checkBox4"
+                    android:id="@+id/cb_zhengke"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="正科" />
 
                 <CheckBox
-                    android:id="@+id/checkBox5"
+                    android:id="@+id/cb_fuke"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="副科" />
 
                 <CheckBox
-                    android:id="@+id/checkBox9"
+                    android:id="@+id/cb_keyuan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="科员" />
 
                 <CheckBox
-                    android:id="@+id/checkBox10"
+                    android:id="@+id/cb_qita"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -163,14 +164,14 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/bt_chongzhi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:text="重置" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/bt_chaxun"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
