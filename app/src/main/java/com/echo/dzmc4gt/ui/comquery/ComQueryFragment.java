@@ -16,6 +16,8 @@ import android.widget.SearchView;
 
 import com.echo.dzmc4gt.R;
 
+import java.util.ArrayList;
+
 public class ComQueryFragment extends Fragment {
 
     private ComQueryViewModel mViewModel;
@@ -54,12 +56,15 @@ public class ComQueryFragment extends Fragment {
                 if (cb_shiye.isChecked()) { s = String.format("%s %s",s,"and rybz not in ('公务员','参照公务员')");}
 
                 if (cb_zhengchu.isChecked() || cb_fuchu.isChecked() || cb_zhengke.isChecked() || cb_fuke.isChecked() || cb_keyuan.isChecked() || cb_qita.isChecked()){
-                    String t = "";
-                    if (cb_zhengchu.isChecked()) { t = String.format("%s,'%s'",t,"正处");}
-
-
+                    ArrayList<String> t = new ArrayList<>();
+                    if (cb_zhengchu.isChecked()) { t.add("正处"); }
+                    if (cb_fuchu.isChecked()) { t.add("副处");  }
+                    if (cb_zhengke.isChecked()) {t.add("正科");}
+                    if (cb_fuke.isChecked()) {t.add("副科");}
+                    if (cb_keyuan.isChecked()) {t.add("科员");}
+                    if (cb_qita.isChecked()) {t.add("NULL");}
+                    s = s + t.toString();
                 }
-                if (cb_zhengchu.isChecked()) {s = String.format("%s %s",s,"and  zwjb='正处'");}
             }
         });
 
