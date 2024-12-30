@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Objects;
 
 public class StubQueryFragment extends Fragment {
 
@@ -49,9 +50,11 @@ public class StubQueryFragment extends Fragment {
         // 设置点击事件监听器
         listView.setOnItemClickListener((parent, view1, position, id) -> {
             listView.setItemChecked(position,true);
-            StubQuery clickedItem = mViewModel.getStubQuery().getValue().get(position);
+            StubQuery clickedItem = Objects.requireNonNull(mViewModel.getStubQuery().getValue()).get(position);
             MainActivity ma =  ((MainActivity) getActivity());
-            ma.setUserList((ma.getDbHelper()).getUserBySQL(clickedItem.value));
+            if (ma != null) {
+                ma.setUserList((ma.getDbHelper()).getUserBySQL(clickedItem.value));
+            }
         });
 
         return view;

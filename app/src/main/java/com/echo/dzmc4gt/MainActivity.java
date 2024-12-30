@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUnitTree() {
-        if (unitTreeViewModel.gList.size() == 0 ) {
+        if (unitTreeViewModel.gList.isEmpty()) {
             Cursor cursor = dbHelper.getUnitByPid(112L);
             while (cursor.moveToNext()) {
                 Unit u = new Unit(cursor.getString(0), cursor.getLong(1));

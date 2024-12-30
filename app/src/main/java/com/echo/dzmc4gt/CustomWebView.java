@@ -2,6 +2,7 @@ package com.echo.dzmc4gt;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.webkit.WebView;
@@ -45,6 +46,7 @@ public class CustomWebView extends WebView {
                         //return true;
                     }
                 } catch (Exception e) {
+                    Log.e("错误",e.toString());
                 }
                 return false;
             }
@@ -77,10 +79,4 @@ public class CustomWebView extends WebView {
             onRightSwipeListener.onRightSwipe();
         }
     }
-
-    // 你可以根据需要调整这些阈值
-    private static final int SWIPE_THRESHOLD = 20;
-    private static final int SWIPE_THRESHOLD_VERTICAL = 10;
-    private static final float SWIPE_THRESHOLD_PERCENTAGE = 0.3f; // 30%的屏幕宽度
-    private static final float SWIPE_THRESHOLD_VERTICAL_PERCENTAGE = 0.05f;
 }

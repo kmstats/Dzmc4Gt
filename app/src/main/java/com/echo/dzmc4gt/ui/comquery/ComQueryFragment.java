@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.NumberPicker;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.echo.dzmc4gt.MainActivity;
 import com.echo.dzmc4gt.R;
@@ -22,13 +21,6 @@ import com.echo.dzmc4gt.R;
 import java.util.ArrayList;
 
 public class ComQueryFragment extends Fragment {
-
-    private ComQueryViewModel mViewModel;
-
-    public static ComQueryFragment newInstance() {
-        return new ComQueryFragment();
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -49,82 +41,90 @@ public class ComQueryFragment extends Fragment {
         Button bt_chongzhi = view.findViewById(R.id.bt_chongzhi);
         Button bt_chaxun = view.findViewById(R.id.bt_chaxun);
 
-        bt_chaxun.setOnClickListener(new View.OnClickListener() {
+        bt_chaxun.setOnClickListener(v -> {
             StringBuilder queryStr = new StringBuilder();
-            String s;
             String temp;
-            @Override
-            public void onClick(View v) {
-                //处理 性别
-                if (cb_nv.isChecked()) { queryStr.append(" and xb='女'"); }
-                //处理 民族
-                if (cb_shao.isChecked()) { queryStr.append(" and mz<>'汉族'"); }
-                //处理 政治面貌
-                if (cb_fei.isChecked()) { queryStr.append(" and zzmm not in ('中共党员','预备党员')");}
-                //处理 人员身份
-                if (cb_shiye.isChecked()) { queryStr.append(" and rybz not in ('公务员','参照公务员')");}
+            //处理 性别
+            if (cb_nv.isChecked()) { queryStr.append(" and xb='女'"); }
+            //处理 民族
+            if (cb_shao.isChecked()) { queryStr.append(" and mz<>'汉族'"); }
+            //处理 政治面貌
+            if (cb_fei.isChecked()) { queryStr.append(" and zzmm not in ('中共党员','预备党员')");}
+            //处理 人员身份
+            if (cb_shiye.isChecked()) { queryStr.append(" and rybz not in ('公务员','参照公务员')");}
 
-                //处理 选定 职级
-                if (cb_zhengchu.isChecked() || cb_fuchu.isChecked() || cb_zhengke.isChecked() || cb_fuke.isChecked() || cb_keyuan.isChecked() || cb_qita.isChecked()){
-                    ArrayList<String> t = new ArrayList<>();
-                    if (cb_zhengchu.isChecked()) { t.add("'正处'"); }
-                    if (cb_fuchu.isChecked()) { t.add("'副处'");  }
-                    if (cb_zhengke.isChecked()) {t.add("'正科'");}
-                    if (cb_fuke.isChecked()) {t.add("'副科'");}
-                    if (cb_keyuan.isChecked()) {t.add("'科员'");}
-                    if (cb_qita.isChecked()) {t.add("NULL");}
+            //处理 选定 职级
+            if (cb_zhengchu.isChecked() || cb_fuchu.isChecked() || cb_zhengke.isChecked() || cb_fuke.isChecked() || cb_keyuan.isChecked() || cb_qita.isChecked()){
+                ArrayList<String> t = new ArrayList<>();
+                if (cb_zhengchu.isChecked()) { t.add("'正处'"); }
+                if (cb_fuchu.isChecked()) { t.add("'副处'");  }
+                if (cb_zhengke.isChecked()) {t.add("'正科'");}
+                if (cb_fuke.isChecked()) {t.add("'副科'");}
+                if (cb_keyuan.isChecked()) {t.add("'科员'");}
+                if (cb_qita.isChecked()) {t.add("NULL");}
 
-                    temp = t.toString();
-                    temp = temp.replace("[", "(");
-                    temp = temp.replace("]",")");
-                    queryStr.append(" and zwjb in " + temp );
-                }
+                temp = t.toString();
+                temp = temp.replace("[", "(");
+                temp = temp.replace("]",")");
+                queryStr.append(" and zwjb in ").append(temp);
+            }
 
-                //处理 简历 内模糊查询
-                if (sv_jl.getQuery().toString().length() > 0){
-                    String[] array = sv_jl.getQuery().toString().split("\\s+");
-                    temp = " and (";
-                    for (String s : array) {
-                        if (temp.equals(" and (")) {
-                            temp = String.format("%s gzjl like '%%%s%%'", temp, s);
-                        } else {
-                            temp = String.format("%s or gzjl like '%%%s%%'", temp, s);
-                        }
+            //处理 简历 内模糊查询
+            if (!sv_jl.getQuery().toString().isEmpty()){
+                String[] array = sv_jl.getQuery().toString().split("\\s+");
+                temp = " and (";
+                for (String s : array) {
+                    if (temp.equals(" and (")) {
+                        temp = String.format("%s gzjl like '%%%s%%'", temp, s);
+                    } else {
+                        temp = String.format("%s or gzjl like '%%%s%%'", temp, s);
                     }
-                    temp = temp + ")";
-                    queryStr.append(temp);
                 }
-
-                //处理 年龄段
-                String nl1 = numberPicker1.getDisplayedValues()[numberPicker1.getValue()];
-                String nl2 = numberPicker2.getDisplayedValues()[numberPicker2.getValue()];
-                temp = String.format(" and (strftime('%%Y.%%m','now')-csnyStr %s and strftime('%%Y.%%m','now')-csnyStr %s)",
-                        nl1,
-                        nl2);
-                temp = temp.replace("∞","1000");
-
+                temp = temp + ")";
                 queryStr.append(temp);
+            }
 
-                if (queryStr.length() > 0) {
-                    // 注意：这里的SQL查询是拼接的，实际应用中应使用参数化查询
-                    StringBuilder sql = new StringBuilder("select xm,mz,csnyStr,xrz,A0192E,photo,zwjb,CadreID from tb_cadre_node as b left outer join tb_Cadre as a on a.CadreID=b.ZwCadreID where CadreID is not null ").append(queryStr).append(" group by cadreid order by dwID, zwOrder");
+            //处理 年龄段
+            String nl1 = numberPicker1.getDisplayedValues()[numberPicker1.getValue()];
+            String nl2 = numberPicker2.getDisplayedValues()[numberPicker2.getValue()];
+            temp = String.format(" and (strftime('%%Y.%%m','now')-csnyStr %s and strftime('%%Y.%%m','now')-csnyStr %s)",
+                    nl1,
+                    nl2);
+            temp = temp.replace("∞","1000");
 
-                    Log.d("执行sql：",sql.toString());
+            queryStr.append(temp);
 
-                    // 执行查询（这里只是模拟，实际应调用数据库查询方法）
-                    MainActivity ma = (MainActivity)getActivity();
+            if (queryStr.length() > 0) {
+                // 注意：这里的SQL查询是拼接的，实际应用中应使用参数化查询
+                StringBuilder sql = new StringBuilder("select xm,mz,csnyStr,xrz,A0192E,photo,zwjb,CadreID from tb_cadre_node as b left outer join tb_Cadre as a on a.CadreID=b.ZwCadreID where CadreID is not null ").append(queryStr).append(" group by cadreid order by dwID, zwOrder");
+
+                Log.d("执行sql：",sql.toString());
+
+                // 执行查询（这里只是模拟，实际应调用数据库查询方法）
+                MainActivity ma = (MainActivity)getActivity();
+                if (ma != null) {
                     ma.setUserList(ma.getDbHelper().getUserBySQL(sql.toString()));
                 }
-
-
             }
+
+
         });
 
-        bt_chongzhi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        bt_chongzhi.setOnClickListener(v -> {
+            cb_nv.setChecked(false);
+            cb_shao.setChecked(false);
+            cb_fei.setChecked(false);
+            cb_shiye.setChecked(false);
+            numberPicker1.setValue(0);
+            numberPicker2.setValue(7);
+            cb_zhengchu.setChecked(false);
+            cb_fuchu.setChecked(false);
+            cb_zhengke.setChecked(false);
+            cb_fuke.setChecked(false);
+            cb_keyuan.setChecked(false);
+            cb_qita.setChecked(false);
+            sv_jl.setQuery("",false);
 
-            }
         });
 
 
@@ -146,11 +146,4 @@ public class ComQueryFragment extends Fragment {
         numberPicker2.setMaxValue(s2.length - 1);
         numberPicker2.setValue(7);
     }
-
- /*   @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ComQueryViewModel.class);
-    }*/
-
 }

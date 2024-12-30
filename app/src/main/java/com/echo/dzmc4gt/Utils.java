@@ -13,23 +13,22 @@ public class Utils {
     /**
      * 字节转换为bitmap
      *
-     * @param data
-     *            字节
+     * @param data 字节
      * @return 返回bitmap
      */
     public static Bitmap byteToBmp(byte[] data) {
         try {
             return BitmapFactory.decodeByteArray(data, 0, data.length);
         } catch (Exception e) {
-            return null;
+           Log.d("错误",e.toString());
         }
+        return null;
     }
 
     /**
      * 压缩图片到100k以下
      *
-     * @param image
-     *            原图片
+     * @param image 原图片
      * @return 压缩后的图片
      */
     public static Bitmap compressImage(Bitmap image) {
@@ -43,10 +42,8 @@ public class Utils {
             options -= 10;// 每次都减少10
         }
         try {
-            ByteArrayInputStream isBm = new ByteArrayInputStream(
-                    baos.toByteArray());// 把压缩后的数据baos存放到ByteArrayInputStream中
+            ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());// 把压缩后的数据baos存放到ByteArrayInputStream中
             bitmap = BitmapFactory.decodeStream(isBm, null, null);// 把ByteArrayInputStream数据生成图片
-
         } catch (Exception e) {
             Log.e("提示", e.toString());
         }
@@ -56,14 +53,13 @@ public class Utils {
     /**
      * 替换字符中的换行为<br>
      *
-     * @param s
-     *            原字符串
+     * @param s 原字符串
      * @return 替换后的字符串
      */
     public static String getBRString(String s) {
         if (s != null) {
             return s.replace("\r\n", "<br>");
-        }else{
+        } else {
             return "";
         }
     }
@@ -71,8 +67,7 @@ public class Utils {
     /**
      * Image转换为Base64码
      *
-     * @param bitmap
-     *            原图片
+     * @param bitmap 原图片
      * @return 图片Base64码
      */
     public static String imgToBase64(Bitmap bitmap) {

@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 public class UserInfoFragment extends Fragment implements CustomWebView.OnRightSwipeListener {
     private MainActivity ma;
@@ -39,7 +40,7 @@ public class UserInfoFragment extends Fragment implements CustomWebView.OnRightS
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
-        String webData = getUserInfoData(ma.getCursorList().getValue());
+        String webData = getUserInfoData(Objects.requireNonNull(ma.getCursorList().getValue()));
         String s = "file:///android_asset";
         webView.loadDataWithBaseURL(s, webData,
                 "text/html", "UTF-8", "");
@@ -54,13 +55,6 @@ public class UserInfoFragment extends Fragment implements CustomWebView.OnRightS
         // 在这里处理右滑逻辑，比如加载下一页或执行其他操作
         ma.setNavControl(R.id.nav_transform);
     }
-
- /*   @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(UserInfoViewModel.class);
-    }*/
-
 
     /**
      * 取得干部详细信息并导入模板

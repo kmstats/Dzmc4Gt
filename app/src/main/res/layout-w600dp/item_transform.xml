@@ -31,8 +31,8 @@
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@id/text_view_item_transform"
-        app:layout_constraintStart_toStartOf="@id/text_view_item_transform"
+        app:layout_constraintEnd_toEndOf="@+id/image_view_item_transform"
+        app:layout_constraintStart_toStartOf="@+id/image_view_item_transform"
         app:layout_constraintTop_toBottomOf="@id/text_view_item_transform"
         tools:text="textview" />
 </androidx.constraintlayout.widget.ConstraintLayout>
