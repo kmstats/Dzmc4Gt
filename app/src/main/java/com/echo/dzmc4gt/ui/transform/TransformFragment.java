@@ -22,6 +22,7 @@ import com.echo.dzmc4gt.User;
 import com.echo.dzmc4gt.Utils;
 import com.echo.dzmc4gt.databinding.FragmentTransformBinding;
 import com.echo.dzmc4gt.databinding.ItemTransformBinding;
+import com.echo.dzmc4gt.databinding.ItemlistTransformBinding;
 
 import java.util.ArrayList;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -64,6 +65,8 @@ public class TransformFragment extends Fragment {
     }
 
     private static class TransformAdapter extends ListAdapter<User, TransformViewHolder> {
+        private final int TYPE_LAYOUT_ONE=1;
+        private final int TYPE_LAYOUT_TWO=2;
 
         protected TransformAdapter() {
             super(new DiffUtil.ItemCallback<User>() {
@@ -79,11 +82,30 @@ public class TransformFragment extends Fragment {
             });
         }
 
+        @Override
+        public int getItemViewType(int position){
+            // 根据数据或位置返回不同的视图类型
+            if (1==1) {
+                return TYPE_LAYOUT_ONE; // 常量，代表第一种布局
+            } else {
+                return TYPE_LAYOUT_TWO; // 常量，代表第二种布局
+            }
+        }
+
         @NonNull
         @Override
         public TransformViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ItemTransformBinding binding = ItemTransformBinding.inflate(LayoutInflater.from(parent.getContext()));
-            return new TransformViewHolder(binding);
+            ItemTransformBinding binding1;
+            ItemlistTransformBinding binding2;
+            if (viewType == TYPE_LAYOUT_ONE) {
+                binding1 = ItemTransformBinding.inflate(LayoutInflater.from(parent.getContext()));
+                return new TransformViewHolder(binding1);
+            }else{
+                binding2 = ItemlistTransformBinding.inflate(LayoutInflater.from(parent.getContext()));
+                return new TransformViewHolder(binding2);
+            }
+
+            //TODO  需要增加列表模式绑定
         }
 
         @Override
@@ -105,6 +127,13 @@ public class TransformFragment extends Fragment {
         public String userID;
 
         public TransformViewHolder(ItemTransformBinding binding) {
+            super(binding.getRoot());
+            imageView = binding.imageViewItemTransform;
+            textView = binding.textViewItemTransform;
+            zw_item_transform = binding.zwItemTransform;
+        }
+
+        public TransformViewHolder(ItemlistTransformBinding binding){
             super(binding.getRoot());
             imageView = binding.imageViewItemTransform;
             textView = binding.textViewItemTransform;

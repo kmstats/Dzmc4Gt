@@ -1,3 +1,4 @@
+/*
 package com.echo.dzmc4gt;
 // MyFragment.java
 import android.os.Bundle;
@@ -48,7 +49,8 @@ public class MyFragment extends Fragment {
     }
 
     // 一个可选的方法，用于设置按钮点击事件来切换布局
-    /*
+    */
+/*
     private void setupButtonToToggleLayoutManager(View view) {
         View toggleButton = view.findViewById(R.id.toggle_button);
         toggleButton.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +60,8 @@ public class MyFragment extends Fragment {
             }
         });
     }
-    */
+    *//*
+
 
     // 切换 LayoutManager 的方法
     private void toggleLayoutManager() {
@@ -116,4 +119,4 @@ public class MyFragment extends Fragment {
 }
 
 
-RecyclerView 如何动态修改item视图为平铺视图、列表视图，在fragment中使用，请简单代码示例
+//RecyclerView 如何动态修改item视图为平铺视图、列表视图，在fragment中使用，请简单代码示例*/
