@@ -45,15 +45,6 @@ public class UserInfoFragment extends Fragment implements CustomWebView.OnRightS
                 "text/html", "UTF-8", "");
         webView.setOnRightSwipeListener(this);
 
-
-
-/*        // 加载网页
-        webView.loadUrl("https://www.example.com");
-        userInfoViewModel.getCursorList().observe(getViewLifecycleOwner(), cursors -> {
-            String s = "file:///android_asset";
-            webView.loadDataWithBaseURL(s, webData,
-                    "text/html", "UTF-8", "");
-        });*/
         return view;
     }
 
