@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private UserInfoViewModel userInfoViewModel;
     private UnitTreeViewModel unitTreeViewModel;
 
+    public int currentViewType = 9;
+
     ArrayList<String> titles;
     NavHostFragment navHostFragment;
     private NavController navController;
@@ -233,6 +235,8 @@ public class MainActivity extends AppCompatActivity {
     public DbHelper getDbHelper(){
         return this.dbHelper;
     }
+
+    public NavController getNavController(){return navController;}
 
     /**
      * 共享toolbar

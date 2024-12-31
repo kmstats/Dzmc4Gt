@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextAppearance.BoldFont" parent="TextAppearance.AppCompat">
+        <item name="android:fontWeight">700</item>
+    </style>
+
+</resources>

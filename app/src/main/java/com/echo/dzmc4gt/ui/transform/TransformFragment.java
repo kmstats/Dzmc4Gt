@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -35,17 +37,38 @@ import androidx.recyclerview.widget.LinearLayoutManager;
  * the [RecyclerView] using LinearLayoutManager in a small screen
  * and shows items using GridLayoutManager in a large screen.
  */
-public class TransformFragment extends Fragment {
+public class TransformFragment extends Fragment implements  View.OnTouchListener{
     private static MainActivity ma ;
     private FragmentTransformBinding binding;
     private RecyclerView recyclerView;
-    private ListAdapter<User, TransformViewHolder> adapter;
+    private TransformAdapter adapter;
+    private ScaleGestureDetector scaleGestureDetector;
 
+    @SuppressLint("ClickableViewAccessibility")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         ma = (MainActivity)getActivity();
         binding = FragmentTransformBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        //创建手势检测器
+        scaleGestureDetector = new ScaleGestureDetector(getContext(), new ScaleGestureDetector.SimpleOnScaleGestureListener(){
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                // 获取缩放因子
+                float scaleFactor = detector.getScaleFactor();
+
+                // 判断是放大还是缩小，并触发相应事件
+                if (scaleFactor > 1.0f) {
+                    // 用户进行了放大操作
+                    onPinchZoomIn();
+                } else if (scaleFactor < 1.0f) {
+                    // 用户进行了缩小操作
+                    onPinchZoomOut();
+                }
+                return true; // 表示我们已经处理了这个手势
+            }
+        });
 
 
         recyclerView = binding.recyclerviewTransform;
@@ -57,11 +80,25 @@ public class TransformFragment extends Fragment {
             ma.setTvCount("共 " + userList.size() +" 条记录");
         });
 
-
-        toggleLayoutManager();
-
-
+        root.setOnTouchListener(this);
+        if (ma.currentViewType != 9){
+            adapter.setViewType(ma.currentViewType);
+        }
         return root;
+    }
+
+    private void onPinchZoomOut() {
+        // 处理缩小逻辑，比如缩小图片、视图等
+        //Toast.makeText(getContext(), "Pinch Zoom Out", Toast.LENGTH_SHORT).show();
+        toggleLayoutManager();
+        //TODO  修改切换视图方法，不再是从当前视图转换另一视图，而应该根据 视图代码，设置视图方式
+
+    }
+
+    private void onPinchZoomIn() {
+        // 处理放大逻辑，比如放大图片、视图等
+        //Toast.makeText(getContext(), "Pinch Zoom In", Toast.LENGTH_SHORT).show();
+        toggleLayoutManager();
     }
 
     @Override
@@ -70,9 +107,26 @@ public class TransformFragment extends Fragment {
         binding = null;
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        // 检查触摸点数量，如果是双指或多指触摸，则进行缩放检测
+        if (event.getPointerCount() > 1) {
+            // 将触摸事件传递给ScaleGestureDetector
+            // 如果ScaleGestureDetector处理了事件（即识别到了缩放手势），则返回true
+            // 否则，由于我们是基于触摸点数量来判断的，这里其实不需要再返回false，
+            // 因为事件已经不会继续传递给ScaleGestureDetector了。
+            // 但为了代码的清晰性，我们可以显式地返回handled（虽然在这个场景下它总是true或已经被内部处理）。
+            return scaleGestureDetector.onTouchEvent(event);
+        } else {
+            // 如果是单指触摸，不处理缩放，允许事件继续传递（如滑动）
+            return false;
+        }
+    }
+
     private static class TransformAdapter extends ListAdapter<User, TransformViewHolder> {
-        private final int TYPE_LAYOUT_ONE=1;
-        private final int TYPE_LAYOUT_TWO=2;
+        private static final int TYPE_LIST = 0;
+        private static final int TYPE_GRID = 1;
+        private int currentViewType = TYPE_GRID; // 默认是列表视图
 
         protected TransformAdapter() {
             super(new DiffUtil.ItemCallback<User>() {
@@ -90,59 +144,69 @@ public class TransformFragment extends Fragment {
 
         @Override
         public int getItemViewType(int position){
-            // 根据数据或位置返回不同的视图类型
-            if (1==2) {
-                return TYPE_LAYOUT_ONE; // 常量，代表第一种布局
-            } else {
-                return TYPE_LAYOUT_TWO; // 常量，代表第二种布局
-            }
+            return currentViewType;
+        }
+
+        public void setViewType(int viewType){
+            this.currentViewType = viewType;
+            ma.currentViewType = viewType;
+            //notifyDataSetChanged();
         }
 
         @NonNull
         @Override
         public TransformViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ItemTransformBinding binding1;
-            ItemlistTransformBinding binding2;
-            if (viewType == TYPE_LAYOUT_ONE) {
-                binding1 = ItemTransformBinding.inflate(LayoutInflater.from(parent.getContext()));
-                return new TransformViewHolder(binding1);
-            }else{
-                binding2 = ItemlistTransformBinding.inflate(LayoutInflater.from(parent.getContext()));
-                return new TransformViewHolder(binding2);
+            if (viewType == TYPE_LIST) {
+                ItemlistTransformBinding listBinding = ItemlistTransformBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+                return new TransformViewHolder(listBinding);
+            } else{
+                ItemTransformBinding gridBinding = ItemTransformBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+                return new TransformViewHolder(gridBinding);
             }
-
-            //TODO  需要增加列表模式绑定
         }
 
         @Override
         public void onBindViewHolder(@NonNull TransformViewHolder holder, int position) {
-            holder.textView.setText(getItem(position).xm);
+            holder.tv_xm.setText(getItem(position).xm);
             Bitmap bmp = Utils.byteToBmp(getItem(position).xp);
-            holder.imageView.setImageBitmap(bmp);
+            holder.iv_xp.setImageBitmap(bmp);
             holder.zw_item_transform.setText(getItem(position).zw);
+            holder.tv_mz.setText(getItem(position).mz);
+            holder.tv_csny.setText(getItem(position).csny);
+            holder.tv_zjzj.setText(getItem(position).zjzj);
+
             holder.userID = getItem(position)._id;
             holder.bind(holder.userID);
         }
     }
 
     private static class TransformViewHolder extends RecyclerView.ViewHolder{
-        private final ImageView imageView;
-        private final TextView textView;
+        private final ImageView iv_xp;
+        private final TextView tv_xm;
         private final TextView zw_item_transform;
+        private final TextView tv_mz;
+        private final TextView tv_csny;
+        private final  TextView tv_zjzj;
         public String userID;
 
         public TransformViewHolder(ItemTransformBinding binding) {
             super(binding.getRoot());
-            imageView = binding.imageViewItemTransform;
-            textView = binding.textViewItemTransform;
-            zw_item_transform = binding.zwItemTransform;
+            iv_xp = binding.ivXp;
+            tv_xm = binding.tvXm;
+            zw_item_transform = binding.tvZw;
+            tv_mz = binding.tvMz;
+            tv_csny = binding.tvCsny;
+            tv_zjzj = binding.tvZjzj;
         }
 
         public TransformViewHolder(ItemlistTransformBinding binding){
             super(binding.getRoot());
-            imageView = binding.imageViewItemTransform;
-            textView = binding.textViewItemTransform;
-            zw_item_transform = binding.zwItemTransform;
+            iv_xp = binding.ivXp;
+            tv_xm = binding.tvXm;
+            zw_item_transform = binding.tvZw;
+            tv_mz = binding.tvMz;
+            tv_csny = binding.tvCsny;
+            tv_zjzj = binding.tvZjzj;
         }
 
         public void bind(String userID) {
@@ -166,9 +230,10 @@ public class TransformFragment extends Fragment {
         if (isGridLayout) {
             // 切换到列表视图
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            adapter.setViewType(TransformAdapter.TYPE_LIST);
         } else {
-            // 切换到平铺视图，这里假设每行显示 3 个 item
-            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 6));
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+            adapter.setViewType(TransformAdapter.TYPE_GRID);
         }
         // 可选：通知 Adapter 数据集已更改（尽管在这个例子中我们没有更改数据）
         //adapter.notifyDataSetChanged();
