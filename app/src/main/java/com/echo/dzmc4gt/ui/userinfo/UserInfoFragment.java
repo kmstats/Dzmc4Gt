@@ -20,6 +20,7 @@ import com.echo.dzmc4gt.CustomWebView;
 import com.echo.dzmc4gt.MainActivity;
 import com.echo.dzmc4gt.R;
 import com.echo.dzmc4gt.Utils;
+import com.echo.dzmc4gt.databinding.FragmentUserInfoBinding;
 
 import java.io.IOException;
 import java.io.InputStream;

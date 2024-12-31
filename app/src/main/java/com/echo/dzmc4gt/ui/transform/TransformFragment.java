@@ -47,6 +47,7 @@ public class TransformFragment extends Fragment {
         binding = FragmentTransformBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+
         recyclerView = binding.recyclerviewTransform;
         adapter = new TransformAdapter();
         recyclerView.setAdapter(adapter);
@@ -55,6 +56,11 @@ public class TransformFragment extends Fragment {
             adapter.submitList(userList);
             ma.setTvCount("共 " + userList.size() +" 条记录");
         });
+
+
+        toggleLayoutManager();
+
+
         return root;
     }
 
@@ -85,7 +91,7 @@ public class TransformFragment extends Fragment {
         @Override
         public int getItemViewType(int position){
             // 根据数据或位置返回不同的视图类型
-            if (1==1) {
+            if (1==2) {
                 return TYPE_LAYOUT_ONE; // 常量，代表第一种布局
             } else {
                 return TYPE_LAYOUT_TWO; // 常量，代表第二种布局
@@ -117,7 +123,6 @@ public class TransformFragment extends Fragment {
             holder.userID = getItem(position)._id;
             holder.bind(holder.userID);
         }
-
     }
 
     private static class TransformViewHolder extends RecyclerView.ViewHolder{
