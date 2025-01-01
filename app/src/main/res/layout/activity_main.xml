@@ -53,7 +53,9 @@ across the layout configurations
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:background="@color/purple_200"
+                android:fitsSystemWindows="true"
+                android:layout_height="700dp" >
 
             </androidx.viewpager2.widget.ViewPager2>
         </com.google.android.material.navigation.NavigationView>
