@@ -9,7 +9,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:theme="@style/Theme.Dzmc4Gt.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/tv_Count"
                 android:layout_width="wrap_content"
@@ -43,7 +44,7 @@
     <!-- This CoordinatorLayout is to dodge the BottomNavigationView when the Snackbar is shown -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="672dp"
         android:layout_marginBottom="56dp"
-        android:background="@android:color/transparent"/>
+        android:background="@color/white" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
