@@ -76,8 +76,9 @@ public class MainActivity extends AppCompatActivity {
         //初始化单位树
         initUnitTree();
 
-/*        //设置工具栏
+      //设置工具栏
         setSupportActionBar(binding.appBarMain.toolbar);
+        /*
         if (binding.appBarMain.fab != null) {
             binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).setAnchorView(R.id.fab).show());
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                     R.id.nav_transform, R.id.wv_user)
                     .setOpenableLayout(binding.drawerLayout)
                     .build();
-            //NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+            NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(navigationView, navController);
 
             //设置tabLayout
