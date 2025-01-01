@@ -18,7 +18,6 @@ import com.echo.dzmc4gt.ui.transform.TransformViewModel;
 import com.echo.dzmc4gt.ui.unitTree.UnitTreeFragment;
 import com.echo.dzmc4gt.ui.unitTree.UnitTreeViewModel;
 import com.echo.dzmc4gt.ui.userinfo.UserInfoViewModel;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -52,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
     private UserInfoViewModel userInfoViewModel;
     private UnitTreeViewModel unitTreeViewModel;
 
-    public int currentViewType = 9;
+    public static final int TYPE_LIST = 0;
+    public static final int TYPE_GRID = 1;
+    public int currentViewType = TYPE_GRID; // 默认是列表视图
 
     ArrayList<String> titles;
     NavHostFragment navHostFragment;
@@ -75,12 +76,12 @@ public class MainActivity extends AppCompatActivity {
         //初始化单位树
         initUnitTree();
 
-        //设置工具栏
+/*        //设置工具栏
         setSupportActionBar(binding.appBarMain.toolbar);
         if (binding.appBarMain.fab != null) {
             binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).setAnchorView(R.id.fab).show());
-        }
+        }*/
 
         //设置主显示区
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                     R.id.nav_transform, R.id.wv_user)
                     .setOpenableLayout(binding.drawerLayout)
                     .build();
-            NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+            //NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(navigationView, navController);
 
             //设置tabLayout

@@ -1,11 +1,14 @@
 package com.echo.dzmc4gt;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.webkit.WebView;
+
+import androidx.annotation.NonNull;
 
 // CustomWebView.java
 public class CustomWebView extends WebView {
@@ -29,7 +32,7 @@ public class CustomWebView extends WebView {
     private void init() {
         gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
             @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            public boolean onFling(MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
                 // 判断右滑，条件是水平方向速度足够大且垂直方向速度较小
                /* if (e1.getX() - e2.getX() > SWIPE_THRESHOLD && Math.abs(e1.getY() - e2.getY()) < SWIPE_THRESHOLD_VERTICAL) {
                     onRightSwipe();
@@ -53,6 +56,7 @@ public class CustomWebView extends WebView {
         });
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event);

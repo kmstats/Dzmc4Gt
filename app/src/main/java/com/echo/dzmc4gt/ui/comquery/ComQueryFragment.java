@@ -96,7 +96,7 @@ public class ComQueryFragment extends Fragment {
 
             if (queryStr.length() > 0) {
                 // 注意：这里的SQL查询是拼接的，实际应用中应使用参数化查询
-                StringBuilder sql = new StringBuilder("select xm,mz,csnyStr,xrz,A0192E,photo,zwjb,CadreID from tb_cadre_node as b left outer join tb_Cadre as a on a.CadreID=b.ZwCadreID where CadreID is not null ").append(queryStr).append(" group by cadreid order by dwID, zwOrder");
+                StringBuilder sql = new StringBuilder("select xm,mz, csnyStr||'('||cast(strftime('%Y.%m', datetime('now'))-csnyStr as INTEGER)||')' as csnyStr,xrz,A0192E,photo,zwjb,CadreID from tb_cadre_node as b left outer join tb_Cadre as a on a.CadreID=b.ZwCadreID where CadreID is not null ").append(queryStr).append(" group by cadreid order by dwID, zwOrder");
 
                 Log.d("执行sql：",sql.toString());
 

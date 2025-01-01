@@ -87,7 +87,6 @@ public class DbHelper  extends SQLiteOpenHelper {
      */
     public void open(){
         if (mDB == null || !mDB.isOpen()){
-            //mDB = mHelper.getWritableDatabase();
             mDB = this.getReadableDatabase();
         }
     }

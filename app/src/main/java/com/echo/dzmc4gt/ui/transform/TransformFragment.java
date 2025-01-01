@@ -15,6 +15,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,8 +29,6 @@ import com.echo.dzmc4gt.databinding.ItemTransformBinding;
 import com.echo.dzmc4gt.databinding.ItemlistTransformBinding;
 
 import java.util.ArrayList;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 
 /**
@@ -52,9 +52,28 @@ public class TransformFragment extends Fragment implements  View.OnTouchListener
         View root = binding.getRoot();
 
         //创建手势检测器
-        scaleGestureDetector = new ScaleGestureDetector(getContext(), new ScaleGestureDetector.SimpleOnScaleGestureListener(){
+        scaleGestureDetector = getScaleGestureDetector();
+
+        recyclerView = binding.recyclerviewTransform;
+        adapter = new TransformAdapter();
+        recyclerView.setAdapter(adapter);
+        ma.getUserList().observe(getViewLifecycleOwner(), userList -> {
+            // 执行 adapter 的 submitList 方法
+            adapter.submitList(userList);
+            ma.setTvCount("共 " + userList.size() +" 条记录");
+        });
+
+        root.setOnTouchListener(this);
+
+        setViewType(ma.currentViewType);
+
+        return root;
+    }
+
+    private @NonNull ScaleGestureDetector getScaleGestureDetector() {
+        return new ScaleGestureDetector(getContext(), new ScaleGestureDetector.SimpleOnScaleGestureListener() {
             @Override
-            public boolean onScale(ScaleGestureDetector detector) {
+            public boolean onScale(@NonNull ScaleGestureDetector detector) {
                 // 获取缩放因子
                 float scaleFactor = detector.getScaleFactor();
 
@@ -69,36 +88,16 @@ public class TransformFragment extends Fragment implements  View.OnTouchListener
                 return true; // 表示我们已经处理了这个手势
             }
         });
-
-
-        recyclerView = binding.recyclerviewTransform;
-        adapter = new TransformAdapter();
-        recyclerView.setAdapter(adapter);
-        ma.getUserList().observe(getViewLifecycleOwner(), userList -> {
-            // 执行 adapter 的 submitList 方法
-            adapter.submitList(userList);
-            ma.setTvCount("共 " + userList.size() +" 条记录");
-        });
-
-        root.setOnTouchListener(this);
-        if (ma.currentViewType != 9){
-            adapter.setViewType(ma.currentViewType);
-        }
-        return root;
     }
 
     private void onPinchZoomOut() {
         // 处理缩小逻辑，比如缩小图片、视图等
-        //Toast.makeText(getContext(), "Pinch Zoom Out", Toast.LENGTH_SHORT).show();
-        toggleLayoutManager();
-        //TODO  修改切换视图方法，不再是从当前视图转换另一视图，而应该根据 视图代码，设置视图方式
-
+       setViewType(MainActivity.TYPE_GRID);
     }
 
     private void onPinchZoomIn() {
         // 处理放大逻辑，比如放大图片、视图等
-        //Toast.makeText(getContext(), "Pinch Zoom In", Toast.LENGTH_SHORT).show();
-        toggleLayoutManager();
+        setViewType(MainActivity.TYPE_LIST);
     }
 
     @Override
@@ -107,15 +106,13 @@ public class TransformFragment extends Fragment implements  View.OnTouchListener
         binding = null;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         // 检查触摸点数量，如果是双指或多指触摸，则进行缩放检测
         if (event.getPointerCount() > 1) {
             // 将触摸事件传递给ScaleGestureDetector
             // 如果ScaleGestureDetector处理了事件（即识别到了缩放手势），则返回true
-            // 否则，由于我们是基于触摸点数量来判断的，这里其实不需要再返回false，
-            // 因为事件已经不会继续传递给ScaleGestureDetector了。
-            // 但为了代码的清晰性，我们可以显式地返回handled（虽然在这个场景下它总是true或已经被内部处理）。
             return scaleGestureDetector.onTouchEvent(event);
         } else {
             // 如果是单指触摸，不处理缩放，允许事件继续传递（如滑动）
@@ -123,11 +120,19 @@ public class TransformFragment extends Fragment implements  View.OnTouchListener
         }
     }
 
-    private static class TransformAdapter extends ListAdapter<User, TransformViewHolder> {
-        private static final int TYPE_LIST = 0;
-        private static final int TYPE_GRID = 1;
-        private int currentViewType = TYPE_GRID; // 默认是列表视图
+    public void setViewType(int viewType){
+        ma.currentViewType = viewType;
+        //TODO  修改切换视图方法，不再是从当前视图转换另一视图，而应该根据 视图代码，设置视图方式
+        boolean isGridLayout = (recyclerView.getLayoutManager() instanceof GridLayoutManager);
+         if (viewType == MainActivity.TYPE_LIST && isGridLayout){ // 切换到列表视图
+             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+         }
+         if (viewType == MainActivity.TYPE_GRID && !isGridLayout){
+             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+         }
+    }
 
+    private static class TransformAdapter extends ListAdapter<User, TransformViewHolder> {
         protected TransformAdapter() {
             super(new DiffUtil.ItemCallback<User>() {
                 @Override
@@ -144,19 +149,13 @@ public class TransformFragment extends Fragment implements  View.OnTouchListener
 
         @Override
         public int getItemViewType(int position){
-            return currentViewType;
-        }
-
-        public void setViewType(int viewType){
-            this.currentViewType = viewType;
-            ma.currentViewType = viewType;
-            //notifyDataSetChanged();
+            return ma.currentViewType;
         }
 
         @NonNull
         @Override
         public TransformViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            if (viewType == TYPE_LIST) {
+            if (viewType == MainActivity.TYPE_LIST) {
                 ItemlistTransformBinding listBinding = ItemlistTransformBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
                 return new TransformViewHolder(listBinding);
             } else{
@@ -220,23 +219,6 @@ public class TransformFragment extends Fragment implements  View.OnTouchListener
                 ma.setNavControl(R.id.nav_userinfo);
             });
         }
-    }
-
-    // 定义一个方法来切换 LayoutManager
-    @SuppressLint("NotifyDataSetChanged")
-    private void toggleLayoutManager() {
-        boolean isGridLayout = (recyclerView.getLayoutManager() instanceof GridLayoutManager);
-
-        if (isGridLayout) {
-            // 切换到列表视图
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            adapter.setViewType(TransformAdapter.TYPE_LIST);
-        } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 5));
-            adapter.setViewType(TransformAdapter.TYPE_GRID);
-        }
-        // 可选：通知 Adapter 数据集已更改（尽管在这个例子中我们没有更改数据）
-        //adapter.notifyDataSetChanged();
     }
 
 }
