@@ -1,4 +1,4 @@
-=电子名册 for 冠唐
+电子名册 for 冠唐
 
 开发工具：Android studio 2024.1.2 
 Android环境：android api 35
