@@ -30,7 +30,6 @@ public class UnitTreeFragment extends Fragment {
     UnitTreeViewModel mViewModel;
 
     public UnitTreeFragment(){
-
     }
 
     @Override
@@ -45,19 +44,28 @@ public class UnitTreeFragment extends Fragment {
         }
 
         View view = inflater.inflate(R.layout.fragment_unittree, container, false);
-        ExpandableListView expandedListView = view.findViewById(R.id.expandableListView);
+        ExpandableListView expandableListView = view.findViewById(R.id.expandableListView);
         adapter = new ExpandableListAdapter(ma, mViewModel.gList, mViewModel.cList);
-        expandedListView.setAdapter(adapter);
+        mViewModel.adapter = adapter;                    // 存储adapter引用，用于刷新
+        mViewModel.expandableListView = expandableListView;  // 存储listView引用，用于收起组
+        expandableListView.setAdapter(adapter);
 
-        //处理单位树 子节点被点击事件
-        expandedListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
-            // 处理子项的点击事件
+        //设置分组（部门）点击监听器
+        expandableListView.setOnGroupClickListener((parent, v, groupPosition, id) -> {
+            long groupID = adapter.getGroupId(groupPosition);
+            ma.setUserList(mDbHelper.getUsersByUnitID(groupID));
+            return false;  // 允许默认展开/折叠行为
+        });
+
+        //设置子单位点击监听器
+        expandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            // 获取点击的子单位ID
             long childID = adapter.getChildId(groupPosition,childPosition);
             ma.setUserList(mDbHelper.getUsersByUnitID(childID));
             return true;
         });
 
-        //设置搜索框
+        //搜索功能
         SearchView searchView = view.findViewById(R.id.text_search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

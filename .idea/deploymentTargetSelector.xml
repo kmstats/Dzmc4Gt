@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-12-23T01:29:53.425358Z">
+        <DropdownSelection timestamp="2026-05-03T12:25:43.285061500Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/kmstats/.android/avd/Pixel_Tablet_API_26.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\kmsta\.android\avd\HW_AIR_API_26_2.avd" />
             </handle>
           </Target>
         </DropdownSelection>

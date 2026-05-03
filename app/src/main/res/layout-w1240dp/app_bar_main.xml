@@ -33,6 +33,33 @@
                 android:layout_gravity="center"
                 android:text="TextView"
                 android:textSize="20sp" />
+
+            <RadioGroup
+                android:id="@+id/rg_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginEnd="8dp">
+
+                <RadioButton
+                    android:id="@+id/rb_kjys"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="科级及以上"
+                    android:checked="true"
+                    android:textColor="@android:color/white"
+                    android:buttonTint="@android:color/white" />
+
+                <RadioButton
+                    android:id="@+id/rb_kjyx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="科级以下"
+                    android:textColor="@android:color/white"
+                    android:buttonTint="@android:color/white" />
+            </RadioGroup>
+
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>

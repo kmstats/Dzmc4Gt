@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -92,7 +94,7 @@ public class TransformFragment extends Fragment implements  View.OnTouchListener
 
     private void onPinchZoomOut() {
         // 处理缩小逻辑，比如缩小图片、视图等
-       setViewType(MainActivity.TYPE_GRID);
+        setViewType(MainActivity.TYPE_GRID);
     }
 
     private void onPinchZoomIn() {
@@ -124,12 +126,12 @@ public class TransformFragment extends Fragment implements  View.OnTouchListener
         ma.currentViewType = viewType;
         //TODO  修改切换视图方法，不再是从当前视图转换另一视图，而应该根据 视图代码，设置视图方式
         boolean isGridLayout = (recyclerView.getLayoutManager() instanceof GridLayoutManager);
-         if (viewType == MainActivity.TYPE_LIST && isGridLayout){ // 切换到列表视图
-             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-         }
-         if (viewType == MainActivity.TYPE_GRID && !isGridLayout){
-             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 5));
-         }
+        if (viewType == MainActivity.TYPE_LIST && isGridLayout){ // 切换到列表视图
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        }
+        if (viewType == MainActivity.TYPE_GRID && !isGridLayout){
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+        }
     }
 
     private static class TransformAdapter extends ListAdapter<User, TransformViewHolder> {
@@ -166,15 +168,47 @@ public class TransformFragment extends Fragment implements  View.OnTouchListener
 
         @Override
         public void onBindViewHolder(@NonNull TransformViewHolder holder, int position) {
-            holder.tv_xm.setText(getItem(position).xm);
-            Bitmap bmp = Utils.byteToBmp(getItem(position).xp);
-            holder.iv_xp.setImageBitmap(bmp);
-            holder.zw_item_transform.setText(getItem(position).zw);
-            holder.tv_mz.setText(getItem(position).mz);
-            holder.tv_csny.setText(getItem(position).csny);
-            holder.tv_zjzj.setText(getItem(position).zjzj);
+            User user = getItem(position);
+            holder.tv_xm.setText(user.xm);
+            holder.zw_item_transform.setText(user.zw);
+            holder.tv_mz.setText(user.mz);
+            holder.tv_csny.setText(user.csny);
+            holder.tv_zjzj.setText(user.zjzj);
 
-            holder.userID = getItem(position)._id;
+            holder.userID = user._id;
+
+            // 异步加载照片
+            if (user.photoId != null) {
+                // 如果已有缓存的照片字节数组，直接使用
+                if (user.photoBytes != null && user.photoBytes.length > 0) {
+                    Bitmap bmp = Utils.byteToBmp(user.photoBytes);
+                    if (bmp != null) {
+                        Bitmap compressed = Utils.compressImage(bmp);
+                        holder.iv_xp.setImageBitmap(compressed);
+                    } else {
+                        holder.iv_xp.setImageResource(R.drawable.ic_menu_camera);
+                    }
+                } else {
+                    // 否则异步查询
+                    holder.iv_xp.setImageResource(R.drawable.ic_menu_camera);
+                    new Thread(() -> {
+                        byte[] photoBytes = ma.getDbHelper().getPhotoByID(Long.parseLong(user.photoId));
+                        if (photoBytes != null && photoBytes.length > 0) {
+                            Bitmap bmp = Utils.byteToBmp(photoBytes);
+                            if (bmp != null) {
+                                Bitmap compressed = Utils.compressImage(bmp);
+                                user.photoBytes = photoBytes;
+                                new Handler(Looper.getMainLooper()).post(() -> {
+                                    holder.iv_xp.setImageBitmap(compressed);
+                                });
+                            }
+                        }
+                    }).start();
+                }
+            } else {
+                holder.iv_xp.setImageResource(R.drawable.ic_menu_camera);
+            }
+
             holder.bind(holder.userID);
         }
     }

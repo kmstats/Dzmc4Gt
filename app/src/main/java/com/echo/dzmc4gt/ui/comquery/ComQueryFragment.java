@@ -87,7 +87,7 @@ public class ComQueryFragment extends Fragment {
             //处理 年龄段
             String nl1 = numberPicker1.getDisplayedValues()[numberPicker1.getValue()];
             String nl2 = numberPicker2.getDisplayedValues()[numberPicker2.getValue()];
-            temp = String.format(" and (strftime('%%Y.%%m','now')-csnyStr %s and strftime('%%Y.%%m','now')-csnyStr %s)",
+            temp = String.format(" and (strftime('%%Y.%%m','now')-substr(csny,1,7) %s and strftime('%%Y.%%m','now')-substr(csny,1,7) %s)",
                     nl1,
                     nl2);
             temp = temp.replace("∞","1000");
@@ -96,9 +96,20 @@ public class ComQueryFragment extends Fragment {
 
             if (queryStr.length() > 0) {
                 // 注意：这里的SQL查询是拼接的，实际应用中应使用参数化查询
-                StringBuilder sql = new StringBuilder("select xm,mz, csnyStr||'('||cast(strftime('%Y.%m', datetime('now'))-csnyStr as INTEGER)||')' as csnyStr,xrz,A0192E,photo,zwjb,CadreID from tb_cadre_node as b left outer join tb_Cadre as a on a.CadreID=b.ZwCadreID where CadreID is not null ").append(queryStr).append(" group by cadreid order by dwID, zwOrder");
+                // 新数据库列：substr(csny,1,7)，照片通过CadreID查tb_CadrePhoto表，职级用allRzsjList
+                StringBuilder sql = new StringBuilder(
+                        "select xm,mz, " +
+                                "substr(csny,1,7)||'('||cast(strftime('%Y.%m', datetime('now'))-substr(csny,1,7) as INTEGER)||')' as csnyStr," +
+                                "xrz," +
+                                "CASE WHEN allRzsjList IS NOT NULL AND allRzsjList != '' THEN allRzsjList ELSE '' END as zjStr," +
+                                "CadreID as _photo_id," +
+                                "zwjb," +
+                                "CadreID as _id " +
+                                "from tb_cadre_node as b left outer join tb_cadre as a on a.CadreID=b.ZwCadreID " +
+                                "where CadreID is not null "
+                ).append(queryStr).append(" group by cadreid order by dwID, zwOrder");
 
-                Log.d("执行sql：",sql.toString());
+                Log.d("执行sql：", sql.toString());
 
                 // 执行查询（这里只是模拟，实际应调用数据库查询方法）
                 MainActivity ma = (MainActivity)getActivity();
@@ -135,7 +146,7 @@ public class ComQueryFragment extends Fragment {
 
     private static void initNumberPicker(NumberPicker numberPicker1, NumberPicker numberPicker2) {
         String[] s1 = new String[]{">=0",">34",">39",">41",">44",">49",">52",">59"};
-        String[] s2 = new String[]{"<=35","<=40","<=42","<=45","<=50","<=53","<=60","<∞"};
+        String[] s2 = new String[]{"<=35","<=40","<=42","<=45","<=50","<=53","<=60","<=∞"};
         numberPicker1.setDisplayedValues(s1);
         numberPicker2.setDisplayedValues(s2);
         numberPicker1.setMinValue(0);
