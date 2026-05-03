@@ -17,7 +17,50 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.Dzmc4Gt.PopupOverlay" />
+            app:popupTheme="@style/Theme.Dzmc4Gt.PopupOverlay">
+
+            <TextView
+                android:id="@+id/tv_TabName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_Count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="TextView"
+                android:textSize="20sp" />
+
+            <RadioGroup
+                android:id="@+id/rg_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginEnd="8dp">
+
+                <RadioButton
+                    android:id="@+id/rb_kjys"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="科级及以上"
+                    android:checked="true"
+                    android:textColor="@android:color/white"
+                    android:buttonTint="@android:color/white" />
+
+                <RadioButton
+                    android:id="@+id/rb_kjyx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="科级以下"
+                    android:textColor="@android:color/white"
+                    android:buttonTint="@android:color/white" />
+            </RadioGroup>
+
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -25,13 +68,4 @@
         android:id="@+id/content_main"
         layout="@layout/content_main" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="@string/fab_content_description"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

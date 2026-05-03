@@ -4,23 +4,22 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
+import com.echo.dzmc4gt.User;
+
 import java.util.List;
 
 public class TransformViewModel extends ViewModel {
-
-    private final MutableLiveData<List<String>> mTexts;
+    private final MutableLiveData<List<User>> userList;
 
     public TransformViewModel() {
-        mTexts = new MutableLiveData<>();
-        List<String> texts = new ArrayList<>();
-        for (int i = 1; i <= 16; i++) {
-            texts.add("This is item # " + i);
-        }
-        mTexts.setValue(texts);
+        userList = new MutableLiveData<>();
     }
 
-    public LiveData<List<String>> getTexts() {
-        return mTexts;
+    public LiveData<List<User>> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> users){
+        userList.setValue(users);
     }
 }

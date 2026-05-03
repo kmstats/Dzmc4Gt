@@ -7,7 +7,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">设置</string>
 
-    <string name="menu_transform">单位树Transform</string>
+    <string name="menu_transform">嵩明干部名册</string>
     <string name="menu_reflow">固定查询Reflow</string>
     <string name="menu_slideshow">组合查询Slideshow</string>
     <string name="menu_settings">设置Settings</string>
@@ -25,4 +25,28 @@
     <string name="unitTree">单位树</string>
     <string name="stubQuery">固定查询</string>
     <string name="comQuery">组合查询</string>
+    <string name="DB_VERSION">1</string>
+    <string name="DB_PTAH">/data/data/com.echo.dzmc4gt/databases/</string>
+    <string name="DB_NAME">gtcadrepad.db</string>
+    <string name="BTN_QUERY">搜索</string>
+    <string name="SearchHint">输入姓名或拼音</string>
+    <string name="TAG">错误：</string>
+    <string name="menu_userinfo">干部详细信息</string>
+    <string name="OPT_NV">女</string>
+    <string name="OPE_SHAO">少数民族</string>
+    <string name="CHB_ZHENGCHU">正处</string>
+    <string name="CHB_FUCHU">副处</string>
+    <string name="CHB_ZHENGKE">正科</string>
+    <string name="CHB_FUKE">副科</string>
+    <string name="CHEB_KEYUAN">科员</string>
+    <string name="OPE_FEIDANG">非中共党员</string>
+    <string name="LAB_AGEGROUP">年龄段</string>
+    <string name="LAB_ZHIJI">职 级</string>
+    <string name="JLSearchHint">在简历中查找关键字</string>
+    <string-array name="stubQuery_list">
+        <item>Item 1</item>
+        <item>Item 2</item>
+        <item>Item 3</item>
+        <!-- 添加更多项 -->
+    </string-array>
 </resources>
